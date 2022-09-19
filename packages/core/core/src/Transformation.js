@@ -75,6 +75,8 @@ import {
 } from './projectPath';
 import {invalidateOnFileCreateToInternal} from './utils';
 import invariant from 'assert';
+import type {Measurement, Tracer} from '@parcel/types';
+import {SystemTracer} from './Tracer';
 
 type GenerateFunc = (input: UncommittedAsset) => Promise<GenerateOutput>;
 
@@ -87,6 +89,7 @@ export type TransformationOpts = {|
   config: ParcelConfig,
   request: TransformationRequest,
   workerApi: WorkerApi,
+  tracer: ?Tracer,
 |};
 
 export type TransformationResult = {|
@@ -109,8 +112,15 @@ export default class Transformation {
   parcelConfig: ParcelConfig;
   invalidations: Map<string, RequestInvalidation>;
   invalidateOnFileCreate: Array<InternalFileCreateInvalidation>;
+  tracer: Tracer | null;
 
-  constructor({request, options, config, workerApi}: TransformationOpts) {
+  constructor({
+    request,
+    options,
+    config,
+    workerApi,
+    tracer,
+  }: TransformationOpts) {
     this.configs = new Map();
     this.parcelConfig = config;
     this.options = options;
@@ -120,6 +130,7 @@ export default class Transformation {
     this.invalidateOnFileCreate = [];
     this.devDepRequests = new Map();
     this.pluginDevDeps = [];
+    this.tracer = tracer || null;
 
     this.pluginOptions = new PluginOptions(
       optionsProxy(
@@ -435,6 +446,12 @@ export default class Transformation {
     let resultingAssets = [];
     let finalAssets = [];
     for (let transformer of pipeline.transformers) {
+      let measurement = SystemTracer.createMeasurement(transformer.name, {
+        categories: ['transform'],
+        args: {
+          name: fromProjectPathRelative(initialAsset.value.filePath),
+        },
+      });
       resultingAssets = [];
       for (let asset of inputAssets) {
         if (
@@ -461,6 +478,10 @@ export default class Transformation {
             transformer.configKeyPath,
             this.parcelConfig,
           );
+
+          if (measurement) {
+            measurement.end();
+          }
 
           for (let result of transformerResults) {
             if (result instanceof UncommittedAsset) {
@@ -880,6 +901,7 @@ type Pipeline = {|
   workerApi: WorkerApi,
   postProcess?: PostProcessFunc,
   generate?: GenerateFunc,
+  tracer?: Tracer,
 |};
 
 type TransformerWithNameAndConfig = {|

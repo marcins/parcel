@@ -50,6 +50,7 @@ import {
   STARTUP,
   ERROR,
 } from './constants';
+import {type Tracer} from '@parcel/types';
 
 export const requestGraphEdgeTypes = {
   subrequest: 2,
@@ -149,6 +150,7 @@ export type RunAPI = {|
   runRequest: <TInput, TResult>(
     subRequest: Request<TInput, TResult>,
     opts?: RunRequestOpts,
+    tracer: ?Tracer,
   ) => Async<TResult>,
 |};
 
@@ -974,6 +976,7 @@ export default class RequestTracker {
     let {api, subRequestContentKeys} = this.createAPI(
       requestNodeId,
       previousInvalidations,
+      tracer,
     );
 
     try {
@@ -1004,6 +1007,7 @@ export default class RequestTracker {
   createAPI(
     requestId: NodeId,
     previousInvalidations: Array<RequestInvalidation>,
+    tracer?: Tracer,
   ): {|api: RunAPI, subRequestContentKeys: Set<ContentKey>|} {
     let subRequestContentKeys = new Set<ContentKey>();
     let api: RunAPI = {

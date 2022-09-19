@@ -39,6 +39,7 @@ import {
   fromProjectPath,
 } from '../projectPath';
 import dumpGraphToGraphViz from '../dumpGraphToGraphViz';
+import type {Tracer} from '@parcel/types';
 
 type AssetGraphRequestInput = {|
   entries?: Array<ProjectPath>,
@@ -78,6 +79,7 @@ export default function createAssetGraphRequest(
     type: 'asset_graph_request',
     id: input.name,
     run: async input => {
+      console.log(`assetGraphRequest::run`, input.tracer);
       let prevResult =
         await input.api.getPreviousResult<AssetGraphRequestResult>();
       let previousAssetGraphHash = prevResult?.assetGraph.getHash();
@@ -121,9 +123,10 @@ export class AssetGraphBuilder {
   cacheKey: string;
   shouldBuildLazily: boolean;
   requestedAssetIds: Set<string>;
+  tracer: ?Tracer;
 
   constructor(
-    {input, api, options}: RunInput,
+    {input, api, options, tracer}: RunInput,
     prevResult: ?AssetGraphBuilderResult,
   ) {
     let {
@@ -152,6 +155,7 @@ export class AssetGraphBuilder {
     );
 
     this.queue = new PromiseQueue();
+    this.tracer = tracer;
   }
 
   async build(): Promise<AssetGraphBuilderResult> {
@@ -944,9 +948,13 @@ export class AssetGraphBuilder {
       : [];
 
     let request = createEntryRequest(input);
-    let result = await this.api.runRequest<ProjectPath, EntryResult>(request, {
-      force: true,
-    });
+    let result = await this.api.runRequest<ProjectPath, EntryResult>(
+      request,
+      {
+        force: true,
+      },
+      this.tracer,
+    );
     this.assetGraph.resolveEntry(request.input, result.entries, request.id);
 
     if (this.assetGraph.safeToIncrementallyBundle) {
@@ -979,6 +987,7 @@ export class AssetGraphBuilder {
     let result = await this.api.runRequest<PathRequestInput, ?AssetGroup>(
       request,
       {force: true},
+      this.tracer,
     );
     this.assetGraph.resolveDependency(input, result, request.id);
   }
@@ -993,6 +1002,7 @@ export class AssetGraphBuilder {
     let assets = await this.api.runRequest<AssetRequestInput, Array<Asset>>(
       request,
       {force: true},
+      this.tracer,
     );
 
     if (assets != null) {

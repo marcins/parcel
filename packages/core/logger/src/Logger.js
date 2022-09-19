@@ -4,6 +4,7 @@ import type {
   IDisposable,
   LogEvent,
   PluginLogger as IPluginLogger,
+  TraceEvent,
 } from '@parcel/types';
 import type {
   Diagnostic,
@@ -76,6 +77,10 @@ class Logger {
       level: 'progress',
       message,
     });
+  }
+
+  trace(event: TraceEvent): void {
+    this.#logEmitter.emit(event);
   }
 }
 

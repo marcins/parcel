@@ -54,6 +54,7 @@ import {
   fromProjectPathRelative,
   toProjectPathUnsafe,
 } from '../projectPath';
+import {SystemTracer} from '../Tracer';
 
 type BundleGraphRequestInput = {|
   assetGraph: AssetGraph,
@@ -276,6 +277,17 @@ class BundlerRunner {
           this.options,
         );
 
+        let measurementFilename = graph
+          .getEntryAssets()
+          .map(asset => fromProjectPathRelative(asset.filePath))
+          .join(', ');
+        let measurement = SystemTracer.createMeasurement(plugin.name, {
+          categories: ['bundling:bundle'],
+          args: {
+            name: measurementFilename,
+          },
+        });
+
         // this the normal bundle workflow (bundle, optimizing, run-times, naming)
         await bundler.bundle({
           bundleGraph: mutableBundleGraph,
@@ -283,15 +295,23 @@ class BundlerRunner {
           options: this.pluginOptions,
           logger,
         });
+        measurement.end();
 
         if (this.pluginOptions.mode === 'production') {
           try {
+            let measurement = SystemTracer.createMeasurement(plugin.name, {
+              categories: ['bundling:optimize'],
+              args: {
+                name: measurementFilename,
+              },
+            });
             await bundler.optimize({
               bundleGraph: mutableBundleGraph,
               config: this.configs.get(plugin.name)?.result,
               options: this.pluginOptions,
               logger,
             });
+            measurement.end();
           } catch (e) {
             throw new ThrowableDiagnostic({
               diagnostic: errorToDiagnostic(e, {

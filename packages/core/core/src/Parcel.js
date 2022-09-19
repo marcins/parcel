@@ -342,6 +342,7 @@ export default class Parcel {
       await this.#requestTracker.runRequest(
         createValidationRequest({optionsRef: this.#optionsRef, assetRequests}),
         {force: assetRequests.length > 0},
+        this.#tracer,
       );
       return event;
     } catch (e) {

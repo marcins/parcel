@@ -8,6 +8,11 @@ import bus from './bus';
 if (!WorkerFarm.isWorker()) {
   // Forward all logger events originating from workers into the main process
   bus.on('logEvent', (e: LogEvent) => {
+    if (e.type === 'trace') {
+      Logger.trace(e);
+      return;
+    }
+
     switch (e.level) {
       case 'info':
         Logger.info(e.diagnostics);

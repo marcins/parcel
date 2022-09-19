@@ -15,6 +15,7 @@ import createWriteBundlesRequest from './WriteBundlesRequest';
 import {assertSignalNotAborted} from '../utils';
 import dumpGraphToGraphViz from '../dumpGraphToGraphViz';
 import {bundleGraphEdgeTypes} from '../BundleGraph';
+import {SystemTracer} from '../Tracer';
 
 type ParcelBuildRequestInput = {|
   optionsRef: SharedReference,
@@ -54,6 +55,11 @@ export default function createParcelBuildRequest(
 
 async function run({input, api, options}: RunInput) {
   let {optionsRef, requestedAssetIds, signal} = input;
+  let transformationMeasurement;
+  let bundlingMeasurement;
+  let packagingRequest;
+
+  transformationMeasurement = SystemTracer.createMeasurement('transformation');
   let request = createAssetGraphRequest({
     name: 'Main',
     entries: options.entries,
@@ -62,10 +68,17 @@ async function run({input, api, options}: RunInput) {
     requestedAssetIds,
   });
   let {assetGraph, changedAssets, assetRequests, previousAssetGraphHash} =
-    await api.runRequest(request, {
-      force: options.shouldBuildLazily && requestedAssetIds.size > 0,
-    });
+    await api.runRequest(
+      request,
+      {
+        force: options.shouldBuildLazily && requestedAssetIds.size > 0,
+      },
+      tracer,
+    );
 
+  transformationMeasurement && transformationMeasurement.end();
+
+  bundlingMeasurement = SystemTracer.createMeasurement('bundling');
   let bundleGraphRequest = createBundleGraphRequest({
     assetGraph,
     previousAssetGraphHash,
@@ -83,6 +96,7 @@ async function run({input, api, options}: RunInput) {
   // $FlowFixMe Added in Flow 0.121.0 upgrade in #4381 (Windows only)
   dumpGraphToGraphViz(bundleGraph._graph, 'BundleGraph', bundleGraphEdgeTypes);
 
+  packagingRequest = SystemTracer.createMeasurement('packaging');
   let writeBundlesRequest = createWriteBundlesRequest({
     bundleGraph,
     optionsRef,
