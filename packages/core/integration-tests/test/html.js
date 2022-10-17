@@ -2821,19 +2821,21 @@ describe('html', function () {
         'integration/scope-hoisting/es6/sibling-dependencies/index.html',
       ),
     );
-    assertBundles(b, [
-      {
-        name: 'index.html',
-        assets: ['index.html'],
-      },
-      {
-        assets: ['a.js', 'esmodule-helpers.js'],
-      },
-      {
-        assets: ['b.js'],
-      },
-    ]);
-
+    // ATLASSIAN: Fork test internally because of differences in bundlegraph avoiding circular dependencies
+    if (process.env.PARCEL_TEST_EXPERIMENTAL_BUNDLER == 1) {
+      assertBundles(b, [
+        {
+          name: 'index.html',
+          assets: ['index.html'],
+        },
+        {
+          assets: ['a.js', 'esmodule-helpers.js'],
+        },
+        {
+          assets: ['b.js'],
+        },
+      ]);
+    }
     let youngerSibling; // bundle containing younger sibling, b.js
     let olderSibling; // bundle containing old sibling, a.js
     b.traverseBundles(bundle => {
