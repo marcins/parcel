@@ -1843,7 +1843,6 @@ export type ReporterEvent =
   | BuildProgressEvent
   | BuildSuccessEvent
   | BuildFailureEvent
-  | TraceEvent
   | WatchStartEvent
   | WatchEndEvent
   | ValidationEvent;
@@ -1884,6 +1883,11 @@ export type TraceEvent = {|
 
 export type Measurement = {|end: () => void|};
 
+export type MeasurementData = {|
+  +categories: string[],
+  +args?: {[key: string]: mixed},
+|};
+
 export interface Tracer {
-  createMeasurement(name: string): Measurement;
+  createMeasurement(name: string, data: MeasurementData): Measurement;
 }

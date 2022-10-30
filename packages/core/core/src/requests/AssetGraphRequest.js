@@ -79,7 +79,6 @@ export default function createAssetGraphRequest(
     type: 'asset_graph_request',
     id: input.name,
     run: async input => {
-      console.log(`assetGraphRequest::run`, input.tracer);
       let prevResult =
         await input.api.getPreviousResult<AssetGraphRequestResult>();
       let previousAssetGraphHash = prevResult?.assetGraph.getHash();
@@ -126,7 +125,7 @@ export class AssetGraphBuilder {
   tracer: ?Tracer;
 
   constructor(
-    {input, api, options, tracer}: RunInput,
+    {input, api, options}: RunInput,
     prevResult: ?AssetGraphBuilderResult,
   ) {
     let {
@@ -155,7 +154,6 @@ export class AssetGraphBuilder {
     );
 
     this.queue = new PromiseQueue();
-    this.tracer = tracer;
   }
 
   async build(): Promise<AssetGraphBuilderResult> {

@@ -55,11 +55,9 @@ export default function createParcelBuildRequest(
 
 async function run({input, api, options}: RunInput) {
   let {optionsRef, requestedAssetIds, signal} = input;
-  let transformationMeasurement;
-  let bundlingMeasurement;
-  let packagingRequest;
 
-  transformationMeasurement = SystemTracer.createMeasurement('transformation');
+  const transformationMeasurement =
+    SystemTracer.createMeasurement('transformation');
   let request = createAssetGraphRequest({
     name: 'Main',
     entries: options.entries,
@@ -68,17 +66,13 @@ async function run({input, api, options}: RunInput) {
     requestedAssetIds,
   });
   let {assetGraph, changedAssets, assetRequests, previousAssetGraphHash} =
-    await api.runRequest(
-      request,
-      {
-        force: options.shouldBuildLazily && requestedAssetIds.size > 0,
-      },
-      tracer,
-    );
+    await api.runRequest(request, {
+      force: options.shouldBuildLazily && requestedAssetIds.size > 0,
+    });
 
-  transformationMeasurement && transformationMeasurement.end();
+  transformationMeasurement.end();
 
-  bundlingMeasurement = SystemTracer.createMeasurement('bundling');
+  const bundlingMeasurement = SystemTracer.createMeasurement('bundling');
   let bundleGraphRequest = createBundleGraphRequest({
     assetGraph,
     previousAssetGraphHash,
@@ -92,17 +86,19 @@ async function run({input, api, options}: RunInput) {
   for (let [id, asset] of changedRuntimeAssets) {
     changedAssets.set(id, asset);
   }
+  bundlingMeasurement.end();
 
   // $FlowFixMe Added in Flow 0.121.0 upgrade in #4381 (Windows only)
   dumpGraphToGraphViz(bundleGraph._graph, 'BundleGraph', bundleGraphEdgeTypes);
 
-  packagingRequest = SystemTracer.createMeasurement('packaging');
+  const packagingRequest = SystemTracer.createMeasurement('packaging');
   let writeBundlesRequest = createWriteBundlesRequest({
     bundleGraph,
     optionsRef,
   });
 
   let bundleInfo = await api.runRequest(writeBundlesRequest);
+  packagingRequest.end();
   assertSignalNotAborted(signal);
 
   return {bundleGraph, bundleInfo, changedAssets, assetRequests};

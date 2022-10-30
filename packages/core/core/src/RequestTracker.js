@@ -976,7 +976,6 @@ export default class RequestTracker {
     let {api, subRequestContentKeys} = this.createAPI(
       requestNodeId,
       previousInvalidations,
-      tracer,
     );
 
     try {
@@ -1007,7 +1006,6 @@ export default class RequestTracker {
   createAPI(
     requestId: NodeId,
     previousInvalidations: Array<RequestInvalidation>,
-    tracer?: Tracer,
   ): {|api: RunAPI, subRequestContentKeys: Set<ContentKey>|} {
     let subRequestContentKeys = new Set<ContentKey>();
     let api: RunAPI = {

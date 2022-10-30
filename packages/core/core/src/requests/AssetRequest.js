@@ -63,14 +63,7 @@ function getId(input: AssetRequestInput) {
   );
 }
 
-async function run({
-  input,
-  api,
-  farm,
-  invalidateReason,
-  options,
-  tracer,
-}: RunInput) {
+async function run({input, api, farm, invalidateReason, options}: RunInput) {
   report({
     type: 'buildProgress',
     phase: 'transforming',
@@ -144,7 +137,6 @@ async function run({
     configCachePath: cachePath,
     optionsRef,
     request,
-    tracer,
   }): TransformationResult);
 
   let time = Date.now() - start;
