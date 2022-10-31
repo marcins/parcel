@@ -8,6 +8,8 @@ import {relativeUrl} from '@parcel/utils';
 import {remapAstLocations} from './remapAstLocations';
 
 import packageJson from '../package.json';
+import {SystemTracer} from '../../../core/core/src/Tracer';
+import {fromProjectPathRelative} from '@parcel/core/src/projectPath';
 
 const transformerVersion: mixed = packageJson.version;
 invariant(typeof transformerVersion === 'string');
@@ -63,6 +65,24 @@ export default async function babel7(
       version: transformerVersion,
       targets: JSON.stringify(babelOptions.targets),
       outputFormat: asset.env.outputFormat,
+    },
+    wrapPluginVisitorMethod: (key, nodeType, fn) => {
+      return function () {
+        let pluginRelative = key.startsWith('/')
+          ? relativeUrl(options.projectRoot, key)
+          : key;
+        const measurement = SystemTracer.createMeasurement(
+          `babel:${pluginRelative}`,
+          {
+            categories: ['transform'],
+            args: {
+              name: relativeUrl(options.projectRoot, asset.filePath),
+            },
+          },
+        );
+        fn.apply(this, arguments);
+        measurement.end();
+      };
     },
   };
 
