@@ -49,6 +49,8 @@ type Options = {|
   packageManager?: PackageManager,
   logger?: PluginLogger,
   shouldAutoInstall?: boolean,
+  // ATLASSIAN: Allow a custom fieldname to be specified so that we can have different aliases for different builds (i.e. SSR and client side builds)
+  aliasField?: string,
 |};
 type ResolvedFile = {|
   path: string,
