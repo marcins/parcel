@@ -153,7 +153,7 @@ export type RunAPI = {|
     subRequest: Request<TInput, TResult>,
     opts?: RunRequestOpts,
     tracer?: Tracer,
-  ) => Async<TResult>,
+  ) => Promise<TResult>,
 |};
 
 type RunRequestOpts = {|
@@ -889,7 +889,7 @@ export default class RequestTracker {
   async getRequestResult<T>(
     contentKey: ContentKey,
     ifMatch?: string,
-  ): Async<?T> {
+  ): Promise<?T> {
     let node = nullthrows(this.graph.getNodeByContentKey(contentKey));
     invariant(node.type === 'request');
 
@@ -963,7 +963,7 @@ export default class RequestTracker {
     request: Request<TInput, TResult>,
     opts?: ?RunRequestOpts,
     tracer?: Tracer,
-  ): Async<TResult> {
+  ): Promise<TResult> {
     let requestId = this.graph.hasContentKey(request.id)
       ? this.graph.getNodeIdByContentKey(request.id)
       : undefined;
@@ -1074,7 +1074,7 @@ export default class RequestTracker {
       runRequest: <TInput, TResult>(
         subRequest: Request<TInput, TResult>,
         opts?: RunRequestOpts,
-      ): Async<TResult> => {
+      ): Promise<TResult> => {
         subRequestContentKeys.add(subRequest.id);
         return this.runRequest<TInput, TResult>(subRequest, opts);
       },
