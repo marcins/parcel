@@ -22,7 +22,7 @@
   "dependencies": {
     "@parcel/diagnostic": "2.0.41",
     "@parcel/plugin": "2.0.41",
-    "@parcel/source-map": "^2.0.0",
+    "@parcel/source-map": "^2.1.1",
     "@parcel/utils": "2.0.41",
     "nullthrows": "^1.1.1",
     "terser": "^5.2.0"
