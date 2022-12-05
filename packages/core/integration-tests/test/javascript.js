@@ -1065,48 +1065,27 @@ describe('javascript', function () {
         },
       },
     );
-    if (process.env.PARCEL_TEST_EXPERIMENTAL_BUNDLER) {
-      assertBundles(b, [
-        {
-          assets: ['dedicated-worker.js'],
-        },
-        {
-          name: 'index.js',
-          assets: [
-            'index.js',
-            'bundle-url.js',
-            'get-worker-url.js',
-            'bundle-manifest.js',
-          ],
-        },
-        {
-          assets: ['shared-worker.js'],
-        },
-        {
-          assets: ['index.js'],
-        },
-      ]);
-    } else {
-      assertBundles(b, [
-        {
-          // ATLASSIAN DEFAULT BUNDLER: Don't share across workers for now as worker-specific code is added
-          assets: ['dedicated-worker.js', 'index.js'],
-        },
-        {
-          name: 'index.js',
-          assets: [
-            'index.js',
-            'bundle-url.js',
-            'get-worker-url.js',
-            'bundle-manifest.js',
-          ],
-        },
-        {
-          // ATLASSIAN DEFAULT BUNDLER: Don't share across workers for now as worker-specific code is added
-          assets: ['shared-worker.js', 'index.js'],
-        },
-      ]);
-    }
+    assertBundles(b, [
+      {
+        assets: ['dedicated-worker.js'],
+      },
+      {
+        name: 'index.js',
+        assets: [
+          'index.js',
+          'bundle-url.js',
+          'get-worker-url.js',
+          'bundle-manifest.js',
+        ],
+      },
+      {
+        assets: ['shared-worker.js'],
+      },
+      {
+        assets: ['index.js'],
+      },
+    ]);
+
     let dedicated, shared;
     b.traverseBundles((bundle, ctx, traversal) => {
       let mainEntry = bundle.getMainEntry();
@@ -1150,59 +1129,31 @@ describe('javascript', function () {
           },
         },
       );
-      if (process.env.PARCEL_TEST_EXPERIMENTAL_BUNDLER) {
-        assertBundles(b, [
-          {
-            assets: ['dedicated-worker.js'],
-          },
-          {
-            name: 'index.js',
-            assets: [
-              'index.js',
-              'bundle-url.js',
-              'get-worker-url.js',
-              'bundle-manifest.js',
-            ],
-          },
-          {
-            assets: [
-              !shouldScopeHoist && 'esmodule-helpers.js',
-              'index.js',
-            ].filter(Boolean),
-          },
-          {
-            assets: ['shared-worker.js'],
-          },
-        ]);
-      } else {
-        assertBundles(b, [
-          {
-            // ATLASSIAN DEFAULT BUNDLER: Don't share across workers for now as worker-specific code is added
-            assets: [
-              'dedicated-worker.js',
-              'index.js',
-              !shouldScopeHoist && 'esmodule-helpers.js',
-            ].filter(Boolean),
-          },
-          {
-            name: 'index.js',
-            assets: [
-              'index.js',
-              'bundle-url.js',
-              'get-worker-url.js',
-              'bundle-manifest.js',
-            ],
-          },
-          {
-            // ATLASSIAN DEFAULT BUNDLER: Don't share across workers for now as worker-specific code is added
-            assets: [
-              'shared-worker.js',
-              'index.js',
-              !shouldScopeHoist && 'esmodule-helpers.js',
-            ].filter(Boolean),
-          },
-        ]);
-      }
+
+      assertBundles(b, [
+        {
+          assets: ['dedicated-worker.js'],
+        },
+        {
+          name: 'index.js',
+          assets: [
+            'index.js',
+            'bundle-url.js',
+            'get-worker-url.js',
+            'bundle-manifest.js',
+          ],
+        },
+        {
+          assets: [
+            !shouldScopeHoist && 'esmodule-helpers.js',
+            'index.js',
+          ].filter(Boolean),
+        },
+        {
+          assets: ['shared-worker.js'],
+        },
+      ]);
+
       let dedicated, shared;
       b.traverseBundles((bundle, ctx, traversal) => {
         let mainEntry = bundle.getMainEntry();
@@ -1248,43 +1199,25 @@ describe('javascript', function () {
           },
         },
       );
-      if (process.env.PARCEL_TEST_EXPERIMENTAL_BUNDLER) {
-        assertBundles(b, [
-          {
-            type: 'js',
-            assets: ['dedicated-worker.js'],
-          },
-          {
-            name: 'index.js',
-            assets: ['index.js', 'bundle-manifest.js', 'get-worker-url.js'],
-          },
-          {
-            type: 'js',
-            assets: ['shared-worker.js'],
-          },
-          {
-            type: 'js',
-            assets: ['index.js'],
-          },
-        ]);
-      } else {
-        assertBundles(b, [
-          {
-            type: 'js',
-            // ATLASSIAN DEFAULT BUNDLER: Don't share across workers for now as worker-specific code is added
-            assets: ['dedicated-worker.js', 'index.js'],
-          },
-          {
-            name: 'index.js',
-            assets: ['index.js', 'bundle-manifest.js', 'get-worker-url.js'],
-          },
-          {
-            type: 'js',
-            // ATLASSIAN DEFAULT BUNDLER: Don't share across workers for now as worker-specific code is added
-            assets: ['shared-worker.js', 'index.js'],
-          },
-        ]);
-      }
+
+      assertBundles(b, [
+        {
+          type: 'js',
+          assets: ['dedicated-worker.js'],
+        },
+        {
+          name: 'index.js',
+          assets: ['index.js', 'bundle-manifest.js', 'get-worker-url.js'],
+        },
+        {
+          type: 'js',
+          assets: ['shared-worker.js'],
+        },
+        {
+          type: 'js',
+          assets: ['index.js'],
+        },
+      ]);
 
       let dedicated, shared;
       b.traverseBundles((bundle, ctx, traversal) => {
@@ -2031,125 +1964,15 @@ describe('javascript', function () {
     });
   });
 
-  // ATLASSIAN DEFAULT BUNDLER: Don't share bundles between workers and page scripts
-  if (process.env.PARCEL_TEST_EXPERIMENTAL_BUNDLER) {
-    it('should create a shared bundle to deduplicate assets in workers', async () => {
-      let b = await bundle(
-        path.join(__dirname, '/integration/worker-shared/index.js'),
-        {
-          mode: 'production',
-          defaultTargetOptions: {
-            shouldScopeHoist: false,
-          },
-        },
-      );
-
-      assertBundles(b, [
-        {
-          name: 'index.js',
-          assets: [
-            'index.js',
-            'lodash.js',
-            'bundle-url.js',
-            'get-worker-url.js',
-            'bundle-manifest.js',
-            'esmodule-helpers.js',
-          ],
-        },
-        {
-          assets: [
-            'worker-a.js',
-            'bundle-url.js',
-            'get-worker-url.js',
-            'bundle-manifest.js',
-          ],
-        },
-        {
-          assets: ['worker-b.js'],
-        },
-        {
-          assets: ['esmodule-helpers.js', 'lodash.js'],
-        },
-      ]);
-
-      let sharedBundle = b
-        .getBundles()
-        .sort((a, b) => b.stats.size - a.stats.size)
-        .find(b => b.name !== 'index.js');
-      let workerBundle = b
-        .getBundles()
-        .find(b => b.name.startsWith('worker-b'));
-      let contents = await outputFS.readFile(workerBundle.filePath, 'utf8');
-      assert(
-        contents.includes(
-          `importScripts("./${path.basename(sharedBundle.filePath)}")`,
-        ),
-      );
-    });
-
-    it('should create a shared bundle between browser and worker contexts', async () => {
-      let b = await bundle(
-        path.join(__dirname, '/integration/html-shared-worker/index.html'),
-        {mode: 'production', defaultTargetOptions: {shouldScopeHoist: false}},
-      );
-
-      assertBundles(b, [
-        {
-          name: 'index.html',
-          assets: ['index.html'],
-        },
-        {
-          assets: [
-            'index.js',
-            'bundle-url.js',
-            'get-worker-url.js',
-            'bundle-manifest.js',
-            'lodash.js',
-            'esmodule-helpers.js',
-          ],
-        },
-        {
-          assets: ['worker.js', 'lodash.js', 'esmodule-helpers.js'],
-        },
-      ]);
-
-      // let sharedBundle = b
-      //   .getBundles()
-      //   .sort((a, b) => b.stats.size - a.stats.size)
-      //   .find(b => b.name !== 'index.js');
-      let workerBundle = b.getBundles().find(b => b.name.startsWith('worker'));
-      // let contents = await outputFS.readFile(workerBundle.filePath, 'utf8');
-      // assert(
-      //   contents.includes(
-      //     `importScripts("./${path.basename(sharedBundle.filePath)}")`,
-      //   ),
-      // );
-
-      let outputArgs = [];
-      let workerArgs = [];
-      await run(b, {
-        Worker: class {
-          constructor(url) {
-            workerArgs.push(url);
-          }
-        },
-        output: (ctx, val) => {
-          outputArgs.push([ctx, val]);
-        },
-      });
-
-      assert.deepStrictEqual(outputArgs, [['main', 3]]);
-      assert.deepStrictEqual(workerArgs, [
-        `http://localhost/${path.basename(workerBundle.filePath)}`,
-      ]);
-    });
-  }
-
-  it('should contain duplicate assets in workers when in development', async () => {
-    if (process.env.PARCEL_TEST_EXPERIMENTAL_BUNDLER) return;
+  it('should create a shared bundle to deduplicate assets in workers', async () => {
     let b = await bundle(
       path.join(__dirname, '/integration/worker-shared/index.js'),
-      {mode: 'development'},
+      {
+        mode: 'production',
+        defaultTargetOptions: {
+          shouldScopeHoist: false,
+        },
+      },
     );
 
     assertBundles(b, [
@@ -2157,9 +1980,10 @@ describe('javascript', function () {
         name: 'index.js',
         assets: [
           'index.js',
+          'lodash.js',
           'bundle-url.js',
           'get-worker-url.js',
-          'lodash.js',
+          'bundle-manifest.js',
           'esmodule-helpers.js',
         ],
       },
@@ -2167,14 +1991,85 @@ describe('javascript', function () {
         assets: [
           'worker-a.js',
           'bundle-url.js',
-          'esmodule-helpers.js',
           'get-worker-url.js',
-          'lodash.js',
+          'bundle-manifest.js',
         ],
       },
       {
-        assets: ['worker-b.js', 'lodash.js', 'esmodule-helpers.js'],
+        assets: ['worker-b.js'],
       },
+      {
+        assets: ['esmodule-helpers.js', 'lodash.js'],
+      },
+    ]);
+
+    let sharedBundle = b
+      .getBundles()
+      .sort((a, b) => b.stats.size - a.stats.size)
+      .find(b => b.name !== 'index.js');
+    let workerBundle = b.getBundles().find(b => b.name.startsWith('worker-b'));
+    let contents = await outputFS.readFile(workerBundle.filePath, 'utf8');
+    assert(
+      contents.includes(
+        `importScripts("./${path.basename(sharedBundle.filePath)}")`,
+      ),
+    );
+  });
+
+  it('should create a shared bundle between browser and worker contexts', async () => {
+    let b = await bundle(
+      path.join(__dirname, '/integration/html-shared-worker/index.html'),
+      {mode: 'production', defaultTargetOptions: {shouldScopeHoist: false}},
+    );
+
+    assertBundles(b, [
+      {
+        name: 'index.html',
+        assets: ['index.html'],
+      },
+      {
+        assets: [
+          'index.js',
+          'bundle-url.js',
+          'get-worker-url.js',
+          'bundle-manifest.js',
+          'lodash.js',
+          'esmodule-helpers.js',
+        ],
+      },
+      {
+        assets: ['worker.js', 'lodash.js', 'esmodule-helpers.js'],
+      },
+    ]);
+
+    // let sharedBundle = b
+    //   .getBundles()
+    //   .sort((a, b) => b.stats.size - a.stats.size)
+    //   .find(b => b.name !== 'index.js');
+    let workerBundle = b.getBundles().find(b => b.name.startsWith('worker'));
+    // let contents = await outputFS.readFile(workerBundle.filePath, 'utf8');
+    // assert(
+    //   contents.includes(
+    //     `importScripts("./${path.basename(sharedBundle.filePath)}")`,
+    //   ),
+    // );
+
+    let outputArgs = [];
+    let workerArgs = [];
+    await run(b, {
+      Worker: class {
+        constructor(url) {
+          workerArgs.push(url);
+        }
+      },
+      output: (ctx, val) => {
+        outputArgs.push([ctx, val]);
+      },
+    });
+
+    assert.deepStrictEqual(outputArgs, [['main', 3]]);
+    assert.deepStrictEqual(workerArgs, [
+      `http://localhost/${path.basename(workerBundle.filePath)}`,
     ]);
   });
 

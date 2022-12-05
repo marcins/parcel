@@ -1837,129 +1837,126 @@ describe('html', function () {
     assert(html.includes('.add(2, 3)'));
   });
 
-  // ATLASSIAN DEFAULT BUNDLER: Don't share across workers for now as worker-specific code is added
-  if (process.env.PARCEL_TEST_EXPERIMENTAL_BUNDLER) {
-    it('inserts sibling bundles into html in the correct order (no head)', async function () {
-      let b = await bundle(
-        path.join(__dirname, '/integration/html-js-shared/index.html'),
-        {
-          mode: 'production',
-          defaultTargetOptions: {
-            shouldScopeHoist: true,
-          },
+  it('inserts sibling bundles into html in the correct order (no head)', async function () {
+    let b = await bundle(
+      path.join(__dirname, '/integration/html-js-shared/index.html'),
+      {
+        mode: 'production',
+        defaultTargetOptions: {
+          shouldScopeHoist: true,
         },
-      );
+      },
+    );
 
-      assertBundles(b, [
-        {
-          type: 'js',
-          assets: ['async.js'],
+    assertBundles(b, [
+      {
+        type: 'js',
+        assets: ['async.js'],
+      },
+      {
+        type: 'js',
+        assets: [
+          'bundle-manifest.js',
+          'get-worker-url.js',
+          'index.js',
+          'lodash.js',
+        ],
+      },
+      {
+        name: 'index.html',
+        type: 'html',
+        assets: ['index.html'],
+      },
+      // {
+      //   type: 'js',
+      //   assets: ['lodash.js'],
+      // },
+      {
+        type: 'js',
+        assets: ['worker.js', 'lodash.js'],
+      },
+    ]);
+
+    // let lodashSibling = path.basename(
+    //   b.getBundles().find(v => v.getEntryAssets().length === 0).filePath,
+    // );
+
+    let html = await outputFS.readFile(
+      path.join(distDir, 'index.html'),
+      'utf8',
+    );
+
+    let insertedBundles = [];
+    let regex = /<script (?:type="[^"]+" )?src="([^"]*)"><\/script>/g;
+    let match;
+    while ((match = regex.exec(html)) !== null) {
+      insertedBundles.push(path.basename(match[1]));
+    }
+
+    assert.equal(insertedBundles.length, 1);
+    // assert.equal(insertedBundles.length, 2);
+    // assert.equal(insertedBundles[0], lodashSibling);
+  });
+  it('inserts sibling bundles into html in the correct order (head)', async function () {
+    let b = await bundle(
+      path.join(__dirname, '/integration/html-js-shared-head/index.html'),
+      {
+        mode: 'production',
+        defaultTargetOptions: {
+          shouldScopeHoist: true,
         },
-        {
-          type: 'js',
-          assets: [
-            'bundle-manifest.js',
-            'get-worker-url.js',
-            'index.js',
-            'lodash.js',
-          ],
-        },
-        {
-          name: 'index.html',
-          type: 'html',
-          assets: ['index.html'],
-        },
-        // {
-        //   type: 'js',
-        //   assets: ['lodash.js'],
-        // },
-        {
-          type: 'js',
-          assets: ['worker.js', 'lodash.js'],
-        },
-      ]);
+      },
+    );
 
-      // let lodashSibling = path.basename(
-      //   b.getBundles().find(v => v.getEntryAssets().length === 0).filePath,
-      // );
+    assertBundles(b, [
+      {
+        type: 'js',
+        assets: ['async.js'],
+      },
+      {
+        type: 'js',
+        assets: [
+          'bundle-manifest.js',
+          'get-worker-url.js',
+          'index.js',
+          'lodash.js',
+        ],
+      },
+      {
+        name: 'index.html',
+        type: 'html',
+        assets: ['index.html'],
+      },
+      // {
+      //   type: 'js',
+      //   assets: ['lodash.js'],
+      // },
+      {
+        type: 'js',
+        assets: ['worker.js', 'lodash.js'],
+      },
+    ]);
 
-      let html = await outputFS.readFile(
-        path.join(distDir, 'index.html'),
-        'utf8',
-      );
+    // let lodashSibling = path.basename(
+    //   b.getBundles().find(v => v.getEntryAssets().length === 0).filePath,
+    // );
 
-      let insertedBundles = [];
-      let regex = /<script (?:type="[^"]+" )?src="([^"]*)"><\/script>/g;
-      let match;
-      while ((match = regex.exec(html)) !== null) {
-        insertedBundles.push(path.basename(match[1]));
-      }
+    let html = await outputFS.readFile(
+      path.join(distDir, 'index.html'),
+      'utf8',
+    );
 
-      assert.equal(insertedBundles.length, 1);
-      // assert.equal(insertedBundles.length, 2);
-      // assert.equal(insertedBundles[0], lodashSibling);
-    });
-    it('inserts sibling bundles into html in the correct order (head)', async function () {
-      let b = await bundle(
-        path.join(__dirname, '/integration/html-js-shared-head/index.html'),
-        {
-          mode: 'production',
-          defaultTargetOptions: {
-            shouldScopeHoist: true,
-          },
-        },
-      );
+    let insertedBundles = [];
+    let regex = /<script (?:type="[^"]+" )?src="([^"]*)"><\/script>/g;
+    let match;
+    while ((match = regex.exec(html)) !== null) {
+      insertedBundles.push(path.basename(match[1]));
+    }
 
-      assertBundles(b, [
-        {
-          type: 'js',
-          assets: ['async.js'],
-        },
-        {
-          type: 'js',
-          assets: [
-            'bundle-manifest.js',
-            'get-worker-url.js',
-            'index.js',
-            'lodash.js',
-          ],
-        },
-        {
-          name: 'index.html',
-          type: 'html',
-          assets: ['index.html'],
-        },
-        // {
-        //   type: 'js',
-        //   assets: ['lodash.js'],
-        // },
-        {
-          type: 'js',
-          assets: ['worker.js', 'lodash.js'],
-        },
-      ]);
-
-      // let lodashSibling = path.basename(
-      //   b.getBundles().find(v => v.getEntryAssets().length === 0).filePath,
-      // );
-
-      let html = await outputFS.readFile(
-        path.join(distDir, 'index.html'),
-        'utf8',
-      );
-
-      let insertedBundles = [];
-      let regex = /<script (?:type="[^"]+" )?src="([^"]*)"><\/script>/g;
-      let match;
-      while ((match = regex.exec(html)) !== null) {
-        insertedBundles.push(path.basename(match[1]));
-      }
-
-      assert.equal(insertedBundles.length, 1);
-      // assert.equal(insertedBundles.length, 2);
-      // assert.equal(insertedBundles[0], lodashSibling);
-    });
-  }
+    assert.equal(insertedBundles.length, 1);
+    // assert.equal(insertedBundles.length, 2);
+    // assert.equal(insertedBundles[0], lodashSibling);
+  });
 
   it('inserts sibling bundles into html with nomodule or type=module', async function () {
     let b = await bundle(
@@ -2729,21 +2726,6 @@ describe('html', function () {
         'integration/scope-hoisting/es6/sibling-dependencies/index.html',
       ),
     );
-    // ATLASSIAN: Fork test internally because of differences in bundlegraph avoiding circular dependencies
-    if (process.env.PARCEL_TEST_EXPERIMENTAL_BUNDLER == 1) {
-      assertBundles(b, [
-        {
-          name: 'index.html',
-          assets: ['index.html'],
-        },
-        {
-          assets: ['a.js', 'esmodule-helpers.js'],
-        },
-        {
-          assets: ['b.js'],
-        },
-      ]);
-    }
     let youngerSibling; // bundle containing younger sibling, b.js
     let olderSibling; // bundle containing old sibling, a.js
     b.traverseBundles(bundle => {

@@ -1458,18 +1458,10 @@ export default class BundleGraph {
         // they were added.
         // TODO: Should this be the case?
 
-        // ATLASSIAN: The default bundler depends on these nodes being in the
-        // reverse order, while the experimental bundler does not. These nodes
-        // are conditionally reversed until the default bundler is phased out.
-        let nodeIds = this._graph.getNodeIdsConnectedFrom(
+        return this._graph.getNodeIdsConnectedFrom(
           nodeId,
           bundleGraphEdgeTypes.references,
         );
-        if (process.env.PARCEL_TEST_EXPERIMENTAL_BUNDLER === '1') {
-          return nodeIds;
-        }
-
-        return nodeIds.reverse();
       },
     });
 
