@@ -93,6 +93,7 @@ export async function parse({
 
     let map = await asset.getMap();
     if (map) {
+      // $FlowFixMe[incompatible-call]
       remapAstLocations(program, map);
     }
 

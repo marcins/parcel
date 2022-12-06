@@ -79,6 +79,7 @@ export default (new Transformer({
   },
 
   generate({asset, ast, options}) {
+    // $FlowFixMe[incompatible-call]
     return generate({asset, ast, options});
   },
 }): Transformer);
