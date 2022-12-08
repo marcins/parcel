@@ -1,6 +1,6 @@
 {
   "name": "@parcel/config-webextension",
-  "version": "2.0.41",
+  "version": "2.0.42",
   "license": "MIT",
   "publishConfig": {
     "access": "public"
@@ -15,12 +15,12 @@
   },
   "main": "index.json",
   "dependencies": {
-    "@parcel/config-default": "2.0.41",
-    "@parcel/packager-raw-url": "2.0.41",
-    "@parcel/packager-webextension": "2.0.41",
-    "@parcel/runtime-webextension": "2.0.41",
-    "@parcel/transformer-raw": "2.0.41",
-    "@parcel/transformer-webextension": "2.0.41"
+    "@parcel/config-default": "2.0.42",
+    "@parcel/packager-raw-url": "2.0.42",
+    "@parcel/packager-webextension": "2.0.42",
+    "@parcel/runtime-webextension": "2.0.42",
+    "@parcel/transformer-raw": "2.0.42",
+    "@parcel/transformer-webextension": "2.0.42"
   },
   "peerDependencies": {
     "@parcel/core": "^2.0.24"

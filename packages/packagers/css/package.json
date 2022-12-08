@@ -1,6 +1,6 @@
 {
   "name": "@parcel/packager-css",
-  "version": "2.0.41",
+  "version": "2.0.42",
   "license": "MIT",
   "publishConfig": {
     "access": "public"
@@ -20,9 +20,9 @@
     "parcel": "^2.0.24"
   },
   "dependencies": {
-    "@parcel/plugin": "2.0.41",
+    "@parcel/plugin": "2.0.42",
     "@parcel/source-map": "^2.1.1",
-    "@parcel/utils": "2.0.41",
+    "@parcel/utils": "2.0.42",
     "nullthrows": "^1.1.1"
   },
   "devDependencies": {
