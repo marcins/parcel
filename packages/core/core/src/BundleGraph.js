@@ -215,6 +215,10 @@ export default class BundleGraph {
           node.usedSymbolsUp.size > 0 &&
           // Only perform rewriting if the dependency only points to a single asset (e.g. CSS modules)
           !hasAmbiguousSymbols &&
+          // It doesn't make sense to retarget dependencies where `*` is used, because the
+          // retargeting won't enable any benefits in that case (apart from potentially even more
+          // code being generated).
+          !node.usedSymbolsUp.has('*') &&
           // TODO We currently can't rename imports in async imports, e.g. from
           //      (parcelRequire("...")).then(({ a }) => a);
           // to
@@ -1454,18 +1458,10 @@ export default class BundleGraph {
         // they were added.
         // TODO: Should this be the case?
 
-        // ATLASSIAN: The default bundler depends on these nodes being in the
-        // reverse order, while the experimental bundler does not. These nodes
-        // are conditionally reversed until the default bundler is phased out.
-        let nodeIds = this._graph.getNodeIdsConnectedFrom(
+        return this._graph.getNodeIdsConnectedFrom(
           nodeId,
           bundleGraphEdgeTypes.references,
         );
-        if (process.env.PARCEL_TEST_EXPERIMENTAL_BUNDLER === '1') {
-          return nodeIds;
-        }
-
-        return nodeIds.reverse();
       },
     });
 
