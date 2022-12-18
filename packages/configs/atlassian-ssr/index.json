@@ -40,7 +40,7 @@
     "@parcel/reporter-manifest",
     "@parcel/reporter-dev-server",
     "@parcel/reporter-bundle-analyzer",
-    "@parcel/reporter-bundle-stats"
+    "@atlassian/parcel-reporter-bundle-stats"
   ],
   "resolvers": ["@parcel/resolver-atlassian-ssr"]
 }

@@ -1,5 +1,5 @@
 {
-  "name": "@atlassian/reporter-bundle-stats",
+  "name": "@atlassian/parcel-reporter-bundle-stats",
   "version": "2.0.43",
   "publishConfig": {
     "access": "public"
