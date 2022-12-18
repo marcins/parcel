@@ -28,10 +28,6 @@ export default (new Reporter({
     await Promise.all(
       [...bundlesByTarget.entries()].map(async ([targetName, bundles]) => {
         await options.outputFS.writeFile(
-          path.join(reportsDir, `${targetName}-stats.json`),
-          JSON.stringify(getBundleStats(bundles), null, 2),
-        );
-        await options.outputFS.writeFile(
           path.join(reportsDir, `${targetName}.html`),
           `
           <html>
@@ -107,18 +103,6 @@ async function getBundleData(
   );
   return {
     groups,
-  };
-}
-
-function getBundleStats(bundles: Array<PackagedBundle>) {
-  return {
-    assets: bundles.map(bundle => {
-      return {
-        name: bundle.name,
-        size: bundle.stats.size,
-        id: bundle.id,
-      };
-    }),
   };
 }
 
