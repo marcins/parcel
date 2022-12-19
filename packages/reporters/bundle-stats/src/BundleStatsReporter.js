@@ -24,12 +24,12 @@ export default (new Reporter({
     await options.outputFS.mkdirp(reportsDir);
 
     await Promise.all(
-      [...bundlesByTarget.entries()].map(async ([targetName, bundles]) => {
-        await options.outputFS.writeFile(
+      [...bundlesByTarget.entries()].map(([targetName, bundles]) =>
+        options.outputFS.writeFile(
           path.join(reportsDir, `${targetName}-stats.json`),
           JSON.stringify(getBundleStats(bundles), null, 2),
-        );
-      }),
+        ),
+      ),
     );
   },
 }): Reporter);
