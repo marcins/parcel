@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@atlassian/parcel-reporter-analytics": "2.0.43",
+    "@atlassian/parcel-reporter-bundle-stats": "2.0.43",
     "@parcel/config-default": "2.0.43",
     "@parcel/reporter-bundle-analyzer": "2.0.43",
     "@parcel/reporter-dev-server": "2.0.43",
