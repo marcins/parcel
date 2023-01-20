@@ -50,7 +50,7 @@ type AssetGraphRequestInput = {|
 |};
 
 type AssetGraphRequestResult = AssetGraphBuilderResult & {|
-  previousAssetGraphHash: ?string,
+  previousAssetGraphHash?: ?string,
   assetGraph: AssetGraph,
   changedAssets: Map<string, Asset>,
   assetRequests: Array<AssetGroup>,
