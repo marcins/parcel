@@ -20,12 +20,12 @@
     "parcel": "^2.7.0"
   },
   "dependencies": {
+    "@parcel/lsp-protocol": "2.0.43",
     "@parcel/plugin": "2.0.43",
     "@parcel/utils": "2.0.43",
     "node-ipc": "^9.1.4",
     "nullthrows": "^1.1.1",
     "ps-node": "^0.1.6",
-    "vscode-jsonrpc": "^6.0.0",
-    "vscode-languageserver": "^7.0.0"
+    "vscode-jsonrpc": "^8.0.2"
   }
 }
