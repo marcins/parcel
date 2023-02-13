@@ -1,6 +1,6 @@
 {
   "name": "@parcel/config-atlassian",
-  "version": "2.0.43",
+  "version": "2.0.44",
   "license": "MIT",
   "publishConfig": {
     "access": "public"
@@ -18,13 +18,13 @@
     "test-ci": "mocha"
   },
   "dependencies": {
-    "@atlassian/parcel-reporter-analytics": "2.0.43",
-    "@parcel/config-default": "2.0.43",
-    "@parcel/reporter-manifest": "2.0.43",
-    "@parcel/reporter-react-loadable": "2.0.43",
-    "@parcel/transformer-image": "2.0.43",
-    "@parcel/transformer-raw": "2.0.43",
-    "@parcel/transformer-workerize": "2.0.43"
+    "@atlassian/parcel-reporter-analytics": "2.0.44",
+    "@parcel/config-default": "2.0.44",
+    "@parcel/reporter-manifest": "2.0.44",
+    "@parcel/reporter-react-loadable": "2.0.44",
+    "@parcel/transformer-image": "2.0.44",
+    "@parcel/transformer-raw": "2.0.44",
+    "@parcel/transformer-workerize": "2.0.44"
   },
   "peerDependencies": {
     "@parcel/core": "^2.0.24"
