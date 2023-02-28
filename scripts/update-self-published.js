@@ -113,17 +113,26 @@ function getMergeHead() {
  * Check nightly version timestamps for the given `pkgName`
  * in reverse chronological order, returning the version
  * with the timestamp closest to `time` without being younger.
+ *
+ * If there are none that are older than `time`,
+ * then the version with newest timestamp will be used.
  */
 function getNearestNightlyVersion(pkgName, time) {
   let candidate = null;
   let info = run(`yarn info ${pkgName} --json`);
-  let versions = [...Object.entries(info.data.time)].reverse();
-  for (let [version, timestamp] of versions) {
-    if (NIGHTLY.test(version)) {
-      let versionTime = new Date(timestamp);
-      if (versionTime < time) break;
-      candidate = version;
+
+  let versions = [...Object.entries(info.data.time)]
+    .filter(([version]) => NIGHTLY.test(version))
+    .map(([version, timestamp]) => [version, new Date(timestamp)])
+    .sort(([, a], [, b]) => (a < b ? 1 : -1));
+
+  for (let [version, versionTime] of versions) {
+    if (versionTime < time) {
+      // Special case: there are no nightly versions newer than time.
+      if (!candidate) candidate = version;
+      break;
     }
+    candidate = version;
   }
   return candidate;
 }
