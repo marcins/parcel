@@ -12,7 +12,7 @@
   "main": "lib/AtlassianSsrResolver.js",
   "source": "src/AtlassianSsrResolver.js",
   "engines": {
-    "parcel": "^2.0.24"
+    "parcel": "^2.3.1"
   },
   "dependencies": {
     "@parcel/node-resolver-core": "2.3.1",

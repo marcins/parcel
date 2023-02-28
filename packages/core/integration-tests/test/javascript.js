@@ -2144,6 +2144,65 @@ describe('javascript', function () {
     ]);
   });
 
+  it('should create a shared bundle between browser and worker contexts', async () => {
+    let b = await bundle(
+      path.join(__dirname, '/integration/html-shared-worker/index.html'),
+      {mode: 'production', defaultTargetOptions: {shouldScopeHoist: false}},
+    );
+
+    assertBundles(b, [
+      {
+        name: 'index.html',
+        assets: ['index.html'],
+      },
+      {
+        assets: [
+          'index.js',
+          'get-worker-url.js',
+          'lodash.js',
+          'esmodule-helpers.js',
+          'bundle-url.js',
+        ],
+      },
+      {
+        assets: ['bundle-manifest.js'],
+      },
+      {
+        assets: ['worker.js', 'lodash.js', 'esmodule-helpers.js'],
+      },
+    ]);
+
+    // let sharedBundle = b
+    //   .getBundles()
+    //   .sort((a, b) => b.stats.size - a.stats.size)
+    //   .find(b => b.name !== 'index.js');
+    let workerBundle = b.getBundles().find(b => b.name.startsWith('worker'));
+    // let contents = await outputFS.readFile(workerBundle.filePath, 'utf8');
+    // assert(
+    //   contents.includes(
+    //     `importScripts("./${path.basename(sharedBundle.filePath)}")`,
+    //   ),
+    // );
+
+    let outputArgs = [];
+    let workerArgs = [];
+    await run(b, {
+      Worker: class {
+        constructor(url) {
+          workerArgs.push(url);
+        }
+      },
+      output: (ctx, val) => {
+        outputArgs.push([ctx, val]);
+      },
+    });
+
+    assert.deepStrictEqual(outputArgs, [['main', 3]]);
+    assert.deepStrictEqual(workerArgs, [
+      `http://localhost/${path.basename(workerBundle.filePath)}`,
+    ]);
+  });
+
   it('should support workers with shared assets between page and worker with async imports', async function () {
     let b = await bundle(
       path.join(__dirname, '/integration/worker-shared-page/index.html'),
@@ -5465,6 +5524,11 @@ describe('javascript', function () {
                 ],
               },
             ],
+          },
+          {
+            message: "Cannot find module 'foo'",
+            origin: '@parcel/resolver-default',
+            hints: [],
           },
         ],
       },

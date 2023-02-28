@@ -519,6 +519,13 @@ export type DependencyOptions = {|
   +loc?: SourceLocation,
   /** The environment of the dependency. */
   +env?: EnvironmentOptions,
+  /**
+   * A list of custom conditions to use when resolving package.json "exports" and "imports".
+   * This is combined with the conditions from the environment. However, it overrides the
+   * default "import" and "require" conditions inferred from the specifierType. To include those
+   * in addition to custom conditions, explicitly add them to this list.
+   */
+  +packageConditions?: Array<string>,
   /** Plugin-specific metadata for the dependency. */
   +meta?: Meta,
   /** The pipeline defined in .parcelrc that the dependency should be processed with. */
@@ -591,6 +598,13 @@ export interface Dependency {
   +loc: ?SourceLocation;
   /** The environment of the dependency. */
   +env: Environment;
+  /**
+   * A list of custom conditions to use when resolving package.json "exports" and "imports".
+   * This is combined with the conditions from the environment. However, it overrides the
+   * default "import" and "require" conditions inferred from the specifierType. To include those
+   * in addition to custom conditions, explicitly add them to this list.
+   */
+  +packageConditions: ?Array<string>;
   /** Plugin-specific metadata for the dependency. */
   +meta: Meta;
   /** If this is an entry, this is the target that is associated with that entry. */
@@ -961,7 +975,27 @@ export interface PluginLogger {
 /**
  * @section transformer
  */
-export type ResolveFn = (from: FilePath, to: string) => Promise<FilePath>;
+export type ResolveOptions = {|
+  /**
+   * How the specifier should be interpreted.
+   *   - esm: An ES module specifier. It is parsed as a URL, but bare specifiers are treated as node_modules.
+   *   - commonjs: A CommonJS specifier. It is not parsed as a URL.
+   *   - url: A URL that works as in a browser. Bare specifiers are treated as relative URLs.
+   *   - custom: A custom specifier. Must be handled by a custom resolver plugin.
+   */
+  +specifierType?: SpecifierType,
+  /** A list of custom conditions to use when resolving package.json "exports" and "imports". */
+  +packageConditions?: Array<string>,
+|};
+
+/**
+ * @section transformer
+ */
+export type ResolveFn = (
+  from: FilePath,
+  to: string,
+  options?: ResolveOptions,
+) => Promise<FilePath>;
 
 /**
  * @section validator
@@ -1578,6 +1612,8 @@ export type Namer<ConfigType> = {|
   |}): Async<?FilePath>,
 |};
 
+type RuntimeAssetPriority = 'sync' | 'parallel';
+
 /**
  * A "synthetic" asset that will be inserted into the bundle graph.
  * @section runtime
@@ -1588,6 +1624,7 @@ export type RuntimeAsset = {|
   +dependency?: Dependency,
   +isEntry?: boolean,
   +env?: EnvironmentOptions,
+  +priority?: RuntimeAssetPriority,
 |};
 
 /**

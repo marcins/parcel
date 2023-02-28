@@ -5,7 +5,7 @@
   "main": "lib/ReactLoadableReporter.js",
   "source": "src/ReactLoadableReporter.js",
   "engines": {
-    "parcel": "^2.0.24"
+    "parcel": "^2.3.1"
   },
   "dependencies": {
     "@parcel/plugin": "2.3.1",

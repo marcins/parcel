@@ -17,7 +17,7 @@
   },
   "engines": {
     "node": ">= 12.0.0",
-    "parcel": "^2.0.24"
+    "parcel": "^2.3.1"
   },
   "files": [
     "lib",
@@ -28,19 +28,18 @@
     "name": "parcel-image"
   },
   "scripts": {
-    "build": "napi build --platform",
-    "build-release": "napi build --platform --release"
+    "build": "napi build --platform --js native.js --dts native.d.ts",
+    "build-release": "napi build --platform --release --js native.js --dts native.d.ts"
   },
   "dependencies": {
     "@parcel/diagnostic": "2.3.1",
     "@parcel/plugin": "2.3.1",
     "@parcel/utils": "2.3.1",
     "@parcel/workers": "2.3.1",
-    "detect-libc": "^1.0.3",
-    "self-published": "npm:@parcel/optimizer-image@2.8.4-nightly.2872"
+    "self-published": "npm:@parcel/optimizer-image@2.8.4-nightly.2878"
   },
   "devDependencies": {
-    "@napi-rs/cli": "^2.6.2",
+    "@napi-rs/cli": "^2.14.8",
     "tiny-benchy": "^1.0.2"
   }
 }
