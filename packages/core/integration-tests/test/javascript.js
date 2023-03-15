@@ -5042,8 +5042,8 @@ describe('javascript', function () {
         name: 'BuildError',
         diagnostics: [
           {
-            message: 'Name expected',
-            origin: '@parcel/optimizer-terser',
+            message: '`let` cannot be used as an identifier in strict mode',
+            origin: '@parcel/optimizer-swc',
             codeFrames: [
               {
                 filePath: undefined,
@@ -5051,20 +5051,18 @@ describe('javascript', function () {
                 code,
                 codeHighlights: [
                   {
-                    message: 'Name expected',
                     start: {
-                      column: 4,
+                      column: 1,
                       line: 1,
                     },
                     end: {
-                      column: 4,
+                      column: 1,
                       line: 1,
                     },
                   },
                 ],
               },
             ],
-            hints: ["It's likely that Terser doesn't support this syntax yet."],
           },
         ],
       },
