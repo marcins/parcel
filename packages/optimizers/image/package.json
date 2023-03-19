@@ -36,7 +36,7 @@
     "@parcel/plugin": "2.3.1",
     "@parcel/utils": "2.3.1",
     "@parcel/workers": "2.3.1",
-    "self-published": "npm:@parcel/optimizer-image@2.8.4-nightly.2888"
+    "self-published": "npm:@parcel/optimizer-image@2.8.4-nightly.2889"
   },
   "devDependencies": {
     "@napi-rs/cli": "^2.14.8",
