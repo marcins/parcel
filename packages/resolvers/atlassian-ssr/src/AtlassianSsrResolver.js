@@ -26,7 +26,6 @@ export default (new Resolver({
           : [],
       mainFields: ['source', 'browser', 'module', 'main'],
       // ATLASSIAN: use custom field in package.json for aliases so we can have different aliases for SSR and client builds
-      aliasField: 'aliasSsr',
     });
 
     return resolver.resolve({
