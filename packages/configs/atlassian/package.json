@@ -20,6 +20,7 @@
   "dependencies": {
     "@atlassian/parcel-reporter-analytics": "2.3.1",
     "@parcel/config-default": "2.3.1",
+    "@parcel/optimizer-terser": "2.3.1",
     "@parcel/reporter-manifest": "2.3.1",
     "@parcel/reporter-react-loadable": "2.3.1",
     "@parcel/transformer-image": "2.3.1",
