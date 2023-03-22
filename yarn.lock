@@ -2509,6 +2509,7 @@
     detect-libc "^1.0.3"
 
 "@parcel/fs-search@2.8.4-nightly.2889+b2331a193", "self-published@npm:@parcel/fs-search@2.8.4-nightly.2889":
+  name self-published
   version "2.8.4-nightly.2889"
   resolved "https://packages.atlassian.com/api/npm/npm-remote/@parcel/fs-search/-/fs-search-2.8.4-nightly.2889.tgz#ffa861b6a96cdf45c9c8f9053d09fdb261b846af"
   integrity sha512-O2bwffAtgpAKl+0CoEUW4dUklfR/PbWdBKiEDFYAR5sj62DRqpno6t5E+QRL6fTev73gQNr0GnygZmhFMHOMaA==
@@ -2552,6 +2553,7 @@
     xxhash-wasm "^0.4.2"
 
 "@parcel/hash@2.8.4-nightly.2889+b2331a193", "self-published@npm:@parcel/hash@2.8.4-nightly.2889":
+  name self-published
   version "2.8.4-nightly.2889"
   resolved "https://packages.atlassian.com/api/npm/npm-remote/@parcel/hash/-/hash-2.8.4-nightly.2889.tgz#853d35862428fe79c4f4cf13ffcaf38e3c3c3238"
   integrity sha512-ioWagqJSXi4H5pdxtYkh3M5kZRzZ3vw4iQ1oWjI1QZwB1kyvG8RsMkCtmkAfWwLqFgE5WwQ8h95bZbgi6LoIdw==
@@ -2607,6 +2609,7 @@
     nullthrows "^1.1.1"
 
 "@parcel/node-resolver-core@2.8.4-nightly.2889+b2331a193", "self-published@npm:@parcel/node-resolver-core@2.8.4-nightly.2889":
+  name self-published
   version "2.8.4-nightly.2889"
   resolved "https://packages.atlassian.com/api/npm/npm-remote/@parcel/node-resolver-core/-/node-resolver-core-2.8.4-nightly.2889.tgz#f905d01b346163ef1ed708b435e5319362464063"
   integrity sha512-NED1DAf3IYDOHItx/l9FgYajCOoGNGWfSAGD8t1lg8L0+RWScMn9FNQ7UmSmvX/Xnf13Ga3tDQnOC4PASo8bUA==
