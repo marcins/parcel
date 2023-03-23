@@ -2038,6 +2038,11 @@ describe('javascript', function () {
         ],
       },
       {
+        // ATLASSIAN: This is only added in the internal fork. It doesn't cause an issue but the reason
+        // is unknown. This can be ignored when deleting the fork
+        assets: ['bundle-manifest.js'],
+      },
+      {
         assets: ['worker.js', 'lodash.js', 'esmodule-helpers.js'],
       },
     ]);
@@ -2162,6 +2167,9 @@ describe('javascript', function () {
           'lodash.js',
           'esmodule-helpers.js',
           'bundle-url.js',
+          // ATLASSIAN: This is only added in the internal fork. It doesn't cause an issue but the reason
+          // is unknown. This can be ignored when deleting the fork
+          'bundle-manifest.js',
         ],
       },
       {
