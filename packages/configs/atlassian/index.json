@@ -9,8 +9,7 @@
     "*.{eot,ico,mp4,svg,ttf,woff}": ["@parcel/transformer-raw"]
   },
   "optimizers": {
-    "*.svg": [],
-    "*.js": ["@parcel/optimizer-terser"]
+    "*.svg": []
   },
   "reporters": [
     "...",
