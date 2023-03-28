@@ -4,7 +4,26 @@ import type {PackagedBundle} from '@parcel/types';
 
 import {Reporter} from '@parcel/plugin';
 import {DefaultMap} from '@parcel/utils';
+
+import assert from 'assert';
 import path from 'path';
+
+export type AssetStat = {|
+  size: number,
+  name: string,
+  bundles: Array<string>,
+|};
+
+export type BundleStat = {|
+  size: number,
+  id: string,
+  assets: Array<string>,
+|};
+
+export type BundleStats = {|
+  bundles: {[key: string]: BundleStat},
+  assets: {[key: string]: AssetStat},
+|};
 
 export default (new Reporter({
   async report({event, options}) {
@@ -34,14 +53,38 @@ export default (new Reporter({
   },
 }): Reporter);
 
-function getBundleStats(bundles: Array<PackagedBundle>) {
+function getBundleStats(bundles: Array<PackagedBundle>): BundleStats {
+  let bundlesByName = new Map<string, BundleStat>();
+  let assetsById = new Map<string, AssetStat>();
+
+  for (let bundle of bundles) {
+    assert(!bundlesByName.has(bundle.name));
+
+    let assets = [];
+    bundle.traverseAssets(asset => {
+      assets.push(asset.id);
+      if (assetsById.has(asset.id)) {
+        assert(assetsById.get(asset.id)?.name === asset.filePath);
+        assert(assetsById.get(asset.id)?.size === asset.stats.size);
+        assetsById.get(asset.id)?.bundles.push(bundle.name);
+      } else {
+        assetsById.set(asset.id, {
+          name: asset.filePath,
+          size: asset.stats.size,
+          bundles: [bundle.name],
+        });
+      }
+    });
+
+    bundlesByName.set(bundle.name, {
+      id: bundle.id,
+      size: bundle.stats.size,
+      assets,
+    });
+  }
+
   return {
-    assets: bundles.map(bundle => {
-      return {
-        name: bundle.name,
-        size: bundle.stats.size,
-        id: bundle.id,
-      };
-    }),
+    bundles: Object.fromEntries(bundlesByName),
+    assets: Object.fromEntries(assetsById),
   };
 }
