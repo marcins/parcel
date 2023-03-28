@@ -37,7 +37,7 @@
     "@parcel/fs": "2.3.1",
     "@parcel/utils": "2.3.1",
     "nullthrows": "^1.1.1",
-    "self-published": "npm:@parcel/node-resolver-core@2.8.4-nightly.2889",
+    "self-published": "npm:@parcel/node-resolver-core@2.8.4-nightly.2897",
     "semver": "^5.7.1"
   },
   "devDependencies": {
