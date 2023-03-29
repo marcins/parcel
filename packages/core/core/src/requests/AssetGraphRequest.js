@@ -49,14 +49,7 @@ type AssetGraphRequestInput = {|
   requestedAssetIds?: Set<string>,
 |};
 
-type AssetGraphRequestResult = AssetGraphBuilderResult & {|
-  previousAssetGraphHash?: ?string,
-  assetGraph: AssetGraph,
-  changedAssets: Map<string, Asset>,
-  assetRequests: Array<AssetGroup>,
-|};
-
-type AssetGraphBuilderResult = {|
+type AssetGraphRequestResult = {|
   assetGraph: AssetGraph,
   /** Assets added/modified since the last successful build. */
   changedAssets: Map<string, Asset>,
@@ -132,7 +125,7 @@ export class AssetGraphBuilder {
 
   constructor(
     {input, api, options}: RunInput,
-    prevResult: ?AssetGraphBuilderResult,
+    prevResult: ?AssetGraphRequestResult,
   ) {
     let {
       entries,
@@ -192,7 +185,7 @@ export class AssetGraphBuilder {
     };
   }
 
-  async build(): Promise<AssetGraphBuilderResult> {
+  async build(): Promise<AssetGraphRequestResult> {
     let errors = [];
     let rootNodeId = nullthrows(
       this.assetGraph.rootNodeId,
