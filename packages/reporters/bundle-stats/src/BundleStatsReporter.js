@@ -53,31 +53,35 @@ export default (new Reporter({
   },
 }): Reporter);
 
-function getBundleStats(
+export function getBundleStats(
   bundles: Array<PackagedBundle>,
   options: PluginOptions,
 ): BundleStats {
   let bundlesByName = new Map<string, BundleStat>();
   let assetsById = new Map<string, AssetStat>();
 
+  // let seen = new Map();
+
   for (let bundle of bundles) {
     let bundleName = path.relative(options.projectRoot, bundle.filePath);
 
-    assert(!bundlesByName.has(bundleName));
+    // If we've already seen this bundle, we can skip it... right?
+    if (bundlesByName.has(bundleName)) {
+      // Sanity check: this is the same bundle, right?
+      assert(bundlesByName.get(bundleName)?.size === bundle.stats.size);
+      continue;
+    }
 
     let assets = [];
-    bundle.traverseAssets(asset => {
-      assets.push(asset.id);
-      if (assetsById.has(asset.id)) {
-        assert(assetsById.get(asset.id)?.name === asset.filePath);
-        assert(assetsById.get(asset.id)?.size === asset.stats.size);
-        assetsById.get(asset.id)?.bundles.push(bundleName);
+    bundle.traverseAssets(({id, filePath, stats: {size}}) => {
+      assets.push(id);
+      let assetName = path.relative(options.projectRoot, filePath);
+      if (assetsById.has(id)) {
+        assert(assetsById.get(id)?.name === assetName);
+        assert(assetsById.get(id)?.size === size);
+        assetsById.get(id)?.bundles.push(bundleName);
       } else {
-        assetsById.set(asset.id, {
-          name: path.relative(options.projectRoot, asset.filePath),
-          size: asset.stats.size,
-          bundles: [bundleName],
-        });
+        assetsById.set(id, {name: assetName, size, bundles: [bundleName]});
       }
     });
 
