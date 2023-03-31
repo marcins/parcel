@@ -1,6 +1,6 @@
 // @flow strict-local
 
-import type {PackagedBundle} from '@parcel/types';
+import type {PackagedBundle, PluginOptions} from '@parcel/types';
 
 import {Reporter} from '@parcel/plugin';
 import {DefaultMap} from '@parcel/utils';
@@ -46,19 +46,24 @@ export default (new Reporter({
       [...bundlesByTarget.entries()].map(([targetName, bundles]) =>
         options.outputFS.writeFile(
           path.join(reportsDir, `${targetName}-stats.json`),
-          JSON.stringify(getBundleStats(bundles), null, 2),
+          JSON.stringify(getBundleStats(bundles, options), null, 2),
         ),
       ),
     );
   },
 }): Reporter);
 
-function getBundleStats(bundles: Array<PackagedBundle>): BundleStats {
+function getBundleStats(
+  bundles: Array<PackagedBundle>,
+  options: PluginOptions,
+): BundleStats {
   let bundlesByName = new Map<string, BundleStat>();
   let assetsById = new Map<string, AssetStat>();
 
   for (let bundle of bundles) {
-    assert(!bundlesByName.has(bundle.name));
+    let bundleName = path.relative(options.projectRoot, bundle.filePath);
+
+    assert(!bundlesByName.has(bundleName));
 
     let assets = [];
     bundle.traverseAssets(asset => {
@@ -66,17 +71,17 @@ function getBundleStats(bundles: Array<PackagedBundle>): BundleStats {
       if (assetsById.has(asset.id)) {
         assert(assetsById.get(asset.id)?.name === asset.filePath);
         assert(assetsById.get(asset.id)?.size === asset.stats.size);
-        assetsById.get(asset.id)?.bundles.push(bundle.name);
+        assetsById.get(asset.id)?.bundles.push(bundleName);
       } else {
         assetsById.set(asset.id, {
-          name: asset.filePath,
+          name: path.relative(options.projectRoot, asset.filePath),
           size: asset.stats.size,
-          bundles: [bundle.name],
+          bundles: [bundleName],
         });
       }
     });
 
-    bundlesByName.set(bundle.name, {
+    bundlesByName.set(bundleName, {
       id: bundle.id,
       size: bundle.stats.size,
       assets,
