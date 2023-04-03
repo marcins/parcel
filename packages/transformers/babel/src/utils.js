@@ -62,7 +62,7 @@ export function enginesToBabelTargets(env: Environment): BabelTargets {
     } else {
       invariant(typeof engineValue === 'string');
       if (!TargetNames.hasOwnProperty(engineName)) continue;
-      let minVersion = getMinSemver(engineValue);
+      let minVersion = semver.minVersion(engineValue)?.toString();
       targets[engineName] = minVersion ?? engineValue;
     }
   }
@@ -83,18 +83,4 @@ export function enginesToBabelTargets(env: Environment): BabelTargets {
   }
 
   return targets;
-}
-
-// ATLASSIAN: reverting this PR for now to unblock builds
-// https://github.com/parcel-bundler/parcel/pull/7334
-// TODO: Replace with `minVersion` (https://github.com/npm/node-semver#ranges-1)
-//       once semver has been upgraded across Parcel.
-export function getMinSemver(version: string): ?string {
-  try {
-    let range = new semver.Range(version);
-    let sorted = range.set.sort((a, b) => a[0].semver.compare(b[0].semver));
-    return sorted[0][0].semver.version;
-  } catch (err) {
-    return null;
-  }
 }
