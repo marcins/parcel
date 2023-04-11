@@ -29,7 +29,7 @@
     "build-release": "napi build --platform --release"
   },
   "dependencies": {
-    "self-published": "npm:@parcel/fs-search@2.8.4-nightly.2898"
+    "self-published": "npm:@parcel/fs-search@2.8.4-nightly.2903"
   },
   "devDependencies": {
     "@napi-rs/cli": "^2.14.8"
