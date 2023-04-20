@@ -1,0 +1,27 @@
+{
+  "name": "bundle-stats-cli",
+  "version": "2.3.3",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "lib/cli.js",
+  "source": "src/cli.js",
+  "bin": {
+    "parcel-bundle-stats": "bin.js"
+  },
+  "engines": {
+    "node": ">= 12.0.0",
+    "parcel": "^2.3.3"
+  },
+  "dependencies": {
+    "@parcel/core": "2.3.3",
+    "@parcel/utils": "2.3.3",
+    "@atlassian/parcel-reporter-bundle-stats": "2.3.3",
+    "commander": "^7.0.0",
+    "parcel-query": "2.3.3"
+  },
+  "devDependencies": {
+    "@parcel/babel-register": "2.3.3",
+    "@parcel/types": "2.3.3"
+  }
+}

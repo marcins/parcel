@@ -14,7 +14,7 @@ import path from 'path';
 import {DefaultMap} from '@parcel/utils';
 
 import {loadGraphs} from 'parcel-query/src/index.js';
-import {getBundleStats} from './BundleStatsReporter';
+import {getBundleStats} from '@atlassian/parcel-reporter-bundle-stats/src/BundleStatsReporter';
 import {PackagedBundle as PackagedBundleClass} from '@parcel/core/src/public/Bundle';
 
 function run({cacheDir, outDir}) {
