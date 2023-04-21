@@ -1,9 +1,7 @@
 {
   "name": "bundle-stats-cli",
   "version": "2.3.4",
-  "publishConfig": {
-    "access": "public"
-  },
+  "private": true,
   "main": "lib/cli.js",
   "source": "src/cli.js",
   "bin": {
