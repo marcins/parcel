@@ -1,6 +1,6 @@
 {
   "name": "@parcel/transformer-coffeescript",
-  "version": "2.3.3",
+  "version": "2.3.4",
   "license": "MIT",
   "publishConfig": {
     "access": "public"
@@ -20,9 +20,9 @@
     "parcel": "^2.3.1"
   },
   "dependencies": {
-    "@parcel/plugin": "2.3.3",
+    "@parcel/plugin": "2.3.4",
     "@parcel/source-map": "^2.1.1",
-    "@parcel/utils": "2.3.3",
+    "@parcel/utils": "2.3.4",
     "coffeescript": "^2.0.3",
     "nullthrows": "^1.1.1",
     "semver": "^5.7.1"
