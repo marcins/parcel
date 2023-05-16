@@ -448,8 +448,7 @@ describe('sourcemaps', function () {
       source: inputs[0],
       generated: raw,
       str: 'const local',
-      // ATLASSIAN: For some reasons we're seeing a different minified var name when running in the fork
-      generatedStr: 'let t',
+      generatedStr: 'let o',
       sourcePath: 'index.js',
     });
 
@@ -458,8 +457,7 @@ describe('sourcemaps', function () {
       source: inputs[0],
       generated: raw,
       str: 'local.a',
-      // ATLASSIAN: For some reasons we're seeing a different minified var name when running in the fork
-      generatedStr: 't.a',
+      generatedStr: 'o.a',
       sourcePath: 'index.js',
     });
 
@@ -468,8 +466,7 @@ describe('sourcemaps', function () {
       source: inputs[1],
       generated: raw,
       str: 'exports.a',
-      // ATLASSIAN: For some reasons we're seeing a different minified var name when running in the fork
-      generatedStr: 'o.a',
+      generatedStr: 't.a',
       sourcePath: 'local.js',
     });
 
@@ -478,8 +475,7 @@ describe('sourcemaps', function () {
       source: inputs[2],
       generated: raw,
       str: 'exports.count = function(a, b) {',
-      // ATLASSIAN: For some reasons we're seeing a different minified var name when running in the fork
-      generatedStr: 'o.count=function(e,n){',
+      generatedStr: 't.count=function(e,n){',
       sourcePath: 'utils/util.js',
     });
   });
