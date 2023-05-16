@@ -4721,7 +4721,7 @@ describe('javascript', function () {
       b.getBundles().find(b => b.type === 'js').filePath,
       'utf8',
     );
-    assert(dist.includes('$accoi$lodash = require("lodash");'));
+    assert(dist.includes('$cPUKg$lodash = require("lodash");'));
 
     let add = await run(b);
     assert.equal(add(2, 3), 5);
@@ -4740,7 +4740,7 @@ describe('javascript', function () {
     );
     assert(
       dist.includes(
-        'const add = require(`lodash/${$9b3d93bfdf73f5b0$var$fn}`);',
+        'const add = require(`lodash/${$8cad8166811e0063$var$fn}`);',
       ),
     );
 
