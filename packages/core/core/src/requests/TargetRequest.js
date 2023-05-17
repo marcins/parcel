@@ -1049,11 +1049,6 @@ export class TargetResolver {
           distEntry,
           publicUrl:
             descriptor.publicUrl ?? this.options.defaultTargetOptions.publicUrl,
-          // ATLASSIAN: "stableEntries": false causes entries with hashes
-          // TODO: Make this env var invalidate cache entries
-          stableEntries:
-            typeof process.env.PARCEL_STABLE_ENTRIES === 'string' ||
-            descriptor.stableEntries,
           env: createEnvironment({
             engines: descriptor.engines ?? pkgEngines,
             context: descriptor.context,

@@ -93,7 +93,6 @@ export type Target = {|
   distEntry?: ?FilePath,
   distDir: ProjectPath,
   env: Environment,
-  stableEntries?: boolean,
   name: string,
   publicUrl: string,
   loc?: ?InternalSourceLocation,
