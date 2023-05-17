@@ -72,5 +72,6 @@
   "collective": {
     "type": "opencollective",
     "url": "https://opencollective.com/parcel"
-  }
+  },
+  "version": "2.3.6"
 }
