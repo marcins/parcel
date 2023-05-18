@@ -10,7 +10,6 @@ import path from 'path';
 // Throw user friendly errors on special webpack loader syntax
 // ex. `imports-loader?$=jquery!./example.js`
 const WEBPACK_IMPORT_REGEX = /\S+-loader\S*!\S+/g;
-let aliasMap;
 function createAliasMap(projectRoot): Map<string, string> {
   const aliasMap = new Map();
   const pkgJSON = JSON.parse(
@@ -28,17 +27,20 @@ function createAliasMap(projectRoot): Map<string, string> {
 }
 export default (new Resolver({
   loadConfig({options, logger}) {
-    aliasMap = aliasMap ?? createAliasMap(options.projectRoot);
-    return new NodeResolver({
-      fs: options.inputFS,
-      projectRoot: options.projectRoot,
-      // $FlowFixMe Can be removed after the `stableEntries` fetaure is gone
-      packageManager: options.packageManager,
-      shouldAutoInstall: options.shouldAutoInstall,
-      logger,
-    });
+    return {
+      resolver: new NodeResolver({
+        fs: options.inputFS,
+        projectRoot: options.projectRoot,
+        // $FlowFixMe Can be removed after the `stableEntries` fetaure is gone
+        packageManager: options.packageManager,
+        shouldAutoInstall: options.shouldAutoInstall,
+        logger,
+      }),
+      aliasMap: createAliasMap(options.projectRoot),
+    };
   },
-  async resolve({dependency, specifier, config: resolver}) {
+  async resolve({dependency, specifier, config}) {
+    let {resolver, aliasMap} = config;
     if (WEBPACK_IMPORT_REGEX.test(dependency.specifier)) {
       throw new Error(
         `The import path: ${dependency.specifier} is using webpack specific loader import syntax, which isn't supported by Parcel.`,
