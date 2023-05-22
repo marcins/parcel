@@ -2,6 +2,7 @@ use crate::collect::{Collect, Export, Import, ImportKind};
 use crate::utils::{
   get_undefined_ident, match_export_name, match_export_name_ident, match_property_name,
 };
+use indexmap::IndexMap;
 use serde::{Deserialize, Serialize};
 use std::collections::hash_map::DefaultHasher;
 use std::collections::{HashMap, HashSet};
@@ -64,7 +65,7 @@ struct Hoist<'a> {
   collect: &'a Collect,
   module_items: Vec<ModuleItem>,
   export_decls: HashSet<JsWord>,
-  hoisted_imports: Vec<ModuleItem>,
+  hoisted_imports: IndexMap<JsWord, ModuleItem>,
   imported_symbols: Vec<ImportedSymbol>,
   exported_symbols: Vec<ExportedSymbol>,
   re_exports: Vec<ImportedSymbol>,
@@ -96,7 +97,7 @@ impl<'a> Hoist<'a> {
       collect,
       module_items: vec![],
       export_decls: HashSet::new(),
-      hoisted_imports: vec![],
+      hoisted_imports: IndexMap::new(),
       imported_symbols: vec![],
       exported_symbols: vec![],
       re_exports: vec![],
@@ -144,9 +145,9 @@ impl<'a> Fold for Hoist<'a> {
         ModuleItem::ModuleDecl(decl) => {
           match decl {
             ModuleDecl::Import(import) => {
-              self
-                .hoisted_imports
-                .push(ModuleItem::ModuleDecl(ModuleDecl::Import(ImportDecl {
+              self.hoisted_imports.insert(
+                import.src.value.clone(),
+                ModuleItem::ModuleDecl(ModuleDecl::Import(ImportDecl {
                   specifiers: vec![],
                   asserts: None,
                   span: DUMMY_SP,
@@ -154,7 +155,8 @@ impl<'a> Fold for Hoist<'a> {
                     format!("{}:{}:{}", self.module_id, import.src.value, "esm").into(),
                   ),
                   type_only: false,
-                })));
+                })),
+              );
               // Ensure that all import specifiers are constant.
               for specifier in &import.specifiers {
                 let local = match specifier {
@@ -190,10 +192,9 @@ impl<'a> Fold for Hoist<'a> {
             }
             ModuleDecl::ExportNamed(export) => {
               if let Some(src) = export.src {
-                // TODO: skip if already imported.
-                self
-                  .hoisted_imports
-                  .push(ModuleItem::ModuleDecl(ModuleDecl::Import(ImportDecl {
+                self.hoisted_imports.insert(
+                  src.value.clone(),
+                  ModuleItem::ModuleDecl(ModuleDecl::Import(ImportDecl {
                     specifiers: vec![],
                     asserts: None,
                     span: DUMMY_SP,
@@ -203,7 +204,8 @@ impl<'a> Fold for Hoist<'a> {
                       raw: None,
                     }),
                     type_only: false,
-                  })));
+                  })),
+                );
 
                 for specifier in export.specifiers {
                   match specifier {
@@ -285,9 +287,9 @@ impl<'a> Fold for Hoist<'a> {
               }
             }
             ModuleDecl::ExportAll(export) => {
-              self
-                .hoisted_imports
-                .push(ModuleItem::ModuleDecl(ModuleDecl::Import(ImportDecl {
+              self.hoisted_imports.insert(
+                export.src.value.clone(),
+                ModuleItem::ModuleDecl(ModuleDecl::Import(ImportDecl {
                   specifiers: vec![],
                   asserts: None,
                   span: DUMMY_SP,
@@ -295,7 +297,8 @@ impl<'a> Fold for Hoist<'a> {
                     format!("{}:{}:{}", self.module_id, export.src.value, "esm").into(),
                   ),
                   type_only: false,
-                })));
+                })),
+              );
               self.re_exports.push(ImportedSymbol {
                 source: export.src.value,
                 local: "*".into(),
@@ -517,9 +520,10 @@ impl<'a> Fold for Hoist<'a> {
       }
     }
 
-    self
-      .module_items
-      .splice(0..0, self.hoisted_imports.drain(0..));
+    self.module_items.splice(
+      0..0,
+      std::mem::take(&mut self.hoisted_imports).into_values(),
+    );
     node.body = std::mem::take(&mut self.module_items);
     node
   }
@@ -905,9 +909,9 @@ impl<'a> Fold for Hoist<'a> {
 
         let ident = BindingIdent::from(self.get_export_ident(member.span, &key));
         if self.collect.static_cjs_exports && self.export_decls.insert(ident.id.sym.clone()) {
-          self
-            .hoisted_imports
-            .push(ModuleItem::Stmt(Stmt::Decl(Decl::Var(Box::new(VarDecl {
+          self.hoisted_imports.insert(
+            ident.id.sym.clone(),
+            ModuleItem::Stmt(Stmt::Decl(Decl::Var(Box::new(VarDecl {
               declare: false,
               kind: VarDeclKind::Var,
               span: node.span,
@@ -920,7 +924,8 @@ impl<'a> Fold for Hoist<'a> {
                 ))),
                 init: None,
               }],
-            })))));
+            })))),
+          );
         }
 
         return AssignExpr {
@@ -1048,10 +1053,10 @@ impl<'a> Hoist<'a> {
       format!("${}$export${:x}", self.module_id, hash!(exported)).into()
     };
 
-    let is_esm = match self.collect.exports.get(exported) {
-      Some(Export { is_esm: true, .. }) => true,
-      _ => false,
-    };
+    let is_esm = matches!(
+      self.collect.exports.get(exported),
+      Some(Export { is_esm: true, .. })
+    );
 
     self.exported_symbols.push(ExportedSymbol {
       local: new_name.clone(),
@@ -1304,7 +1309,7 @@ mod tests {
             start_line: 3,
             start_col: 20,
             end_line: 3,
-            end_col: 23
+            end_col: 24
           },
           is_esm: true
         }
@@ -3236,7 +3241,7 @@ mod tests {
             start_line: 1,
             start_col: 1,
             end_line: 1,
-            end_col: 29
+            end_col: 30
           },
           is_esm: true
         }
@@ -3254,7 +3259,7 @@ mod tests {
             start_line: 1,
             start_col: 1,
             end_line: 1,
-            end_col: 34
+            end_col: 35
           },
           is_esm: true
         }
@@ -3272,7 +3277,7 @@ mod tests {
             start_line: 1,
             start_col: 1,
             end_line: 1,
-            end_col: 23
+            end_col: 24
           },
           is_esm: true
         }
@@ -3290,7 +3295,7 @@ mod tests {
             start_line: 1,
             start_col: 1,
             end_line: 1,
-            end_col: 28
+            end_col: 29
           },
           is_esm: true
         }
@@ -3308,7 +3313,7 @@ mod tests {
             start_line: 1,
             start_col: 1,
             end_line: 1,
-            end_col: 19
+            end_col: 20
           },
           is_esm: true
         }
@@ -3326,7 +3331,7 @@ mod tests {
             start_line: 1,
             start_col: 16,
             end_line: 1,
-            end_col: 18
+            end_col: 19
           },
           is_esm: false
         }
@@ -3344,7 +3349,7 @@ mod tests {
             start_line: 1,
             start_col: 16,
             end_line: 1,
-            end_col: 20
+            end_col: 21
           },
           is_esm: false
         }
@@ -3362,7 +3367,7 @@ mod tests {
             start_line: 1,
             start_col: 16,
             end_line: 1,
-            end_col: 20
+            end_col: 21
           },
           is_esm: false
         }
@@ -3380,7 +3385,7 @@ mod tests {
             start_line: 1,
             start_col: 9,
             end_line: 1,
-            end_col: 11
+            end_col: 12
           },
           is_esm: false
         }
@@ -3398,7 +3403,7 @@ mod tests {
             start_line: 1,
             start_col: 6,
             end_line: 1,
-            end_col: 8
+            end_col: 9
           },
           is_esm: false
         }

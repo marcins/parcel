@@ -457,6 +457,49 @@ describe('scope hoisting', function () {
       assert.equal(foo + bar + baz + a + bb, 15);
     });
 
+    it('deduplicates imports when wrapped', async function () {
+      let b = await bundle(
+        path.join(
+          __dirname,
+          '/integration/scope-hoisting/es6/import-multiple-wrapped/index.js',
+        ),
+      );
+
+      let contents = await outputFS.readFile(
+        b.getBundles()[0].filePath,
+        'utf8',
+      );
+
+      let assetB = nullthrows(
+        b.getBundles()[0]?.traverseAssets((a, _, actions) => {
+          if (
+            a.filePath ===
+            path.join(
+              __dirname,
+              '/integration/scope-hoisting/es6/import-multiple-wrapped/b.js',
+            )
+          ) {
+            actions.stop();
+            return a;
+          }
+        }),
+      );
+      assert.equal(
+        [
+          ...contents.matchAll(
+            new RegExp(
+              'parcelRequires*\\(s*"' + b.getAssetPublicId(assetB) + '"s*\\)',
+              'g',
+            ),
+          ),
+        ].length,
+        1,
+      );
+
+      let output = await run(b);
+      assert.equal(output, 15);
+    });
+
     it('supports re-exporting all exports from multiple modules deep', async function () {
       let b = await bundle(
         path.join(
@@ -548,6 +591,8 @@ describe('scope hoisting', function () {
         'integration/scope-hoisting/es6/re-export-exclude-default/b.js',
         false,
       )} does not export 'default'`;
+
+      // $FlowFixMe[prop-missing]
       await assert.rejects(() => bundle(path.join(__dirname, source)), {
         name: 'BuildError',
         message,
@@ -561,6 +606,7 @@ describe('scope hoisting', function () {
                 language: 'js',
                 codeHighlights: [
                   {
+                    message: undefined,
                     start: {
                       line: 1,
                       column: 8,
@@ -588,6 +634,7 @@ describe('scope hoisting', function () {
         'integration/scope-hoisting/es6/re-export-missing/c.js',
         false,
       )} does not export 'foo'`;
+      // $FlowFixMe[prop-missing]
       await assert.rejects(() => bundle(path.join(__dirname, source)), {
         name: 'BuildError',
         message,
@@ -604,6 +651,7 @@ describe('scope hoisting', function () {
                 language: 'js',
                 codeHighlights: [
                   {
+                    message: undefined,
                     start: {
                       line: 1,
                       column: 9,
@@ -640,6 +688,7 @@ describe('scope hoisting', function () {
                 language: 'js',
                 codeHighlights: [
                   {
+                    message: undefined,
                     start: {
                       line: 1,
                       column: 9,
@@ -657,6 +706,7 @@ describe('scope hoisting', function () {
       };
 
       let source = path.join(__dirname, entry);
+      // $FlowFixMe[prop-missing]
       await assert.rejects(
         () =>
           bundle(source, {
@@ -666,6 +716,7 @@ describe('scope hoisting', function () {
           }),
         error,
       );
+      // $FlowFixMe[prop-missing]
       await assert.rejects(
         () =>
           bundle(source, {
@@ -1815,6 +1866,7 @@ describe('scope hoisting', function () {
                     language: 'js',
                     codeHighlights: [
                       {
+                        message: undefined,
                         start: {
                           column: 8,
                           line: 2,
@@ -1862,6 +1914,7 @@ describe('scope hoisting', function () {
                     language: 'js',
                     codeHighlights: [
                       {
+                        message: undefined,
                         start: {
                           column: 10,
                           line: 3,
@@ -1909,6 +1962,7 @@ describe('scope hoisting', function () {
                     language: 'js',
                     codeHighlights: [
                       {
+                        message: undefined,
                         start: {
                           column: 38,
                           line: 1,
@@ -1956,6 +2010,7 @@ describe('scope hoisting', function () {
                     language: 'js',
                     codeHighlights: [
                       {
+                        message: undefined,
                         start: {
                           column: 45,
                           line: 1,
@@ -2483,6 +2538,7 @@ describe('scope hoisting', function () {
                   language: 'js',
                   codeHighlights: [
                     {
+                      message: undefined,
                       start: {
                         line: 1,
                         column: 10,
@@ -3059,7 +3115,7 @@ describe('scope hoisting', function () {
                 filePath: source,
                 codeHighlights: [
                   {
-                    message: null,
+                    message: undefined,
                     start: {
                       line: 2,
                       column: 1,
@@ -3107,7 +3163,7 @@ describe('scope hoisting', function () {
                 filePath: source,
                 codeHighlights: [
                   {
-                    message: null,
+                    message: undefined,
                     start: {
                       line: 2,
                       column: 1,
@@ -3155,7 +3211,7 @@ describe('scope hoisting', function () {
                 filePath: source,
                 codeHighlights: [
                   {
-                    message: null,
+                    message: undefined,
                     start: {
                       line: 2,
                       column: 1,
@@ -3203,7 +3259,7 @@ describe('scope hoisting', function () {
                 filePath: source,
                 codeHighlights: [
                   {
-                    message: null,
+                    message: undefined,
                     start: {
                       line: 2,
                       column: 8,
@@ -3251,7 +3307,7 @@ describe('scope hoisting', function () {
                 filePath: source,
                 codeHighlights: [
                   {
-                    message: null,
+                    message: undefined,
                     start: {
                       line: 2,
                       column: 1,
@@ -3262,7 +3318,7 @@ describe('scope hoisting', function () {
                     },
                   },
                   {
-                    message: null,
+                    message: undefined,
                     start: {
                       line: 3,
                       column: 1,

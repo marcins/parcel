@@ -23,9 +23,9 @@
   "dependencies": {
     "@parcel/diagnostic": "2.3.5",
     "@parcel/logger": "2.3.5",
+    "@parcel/profiler": "2.3.5",
     "@parcel/types": "2.3.5",
     "@parcel/utils": "2.3.5",
-    "chrome-trace-event": "^1.0.2",
     "nullthrows": "^1.1.1"
   },
   "peerDependencies": {

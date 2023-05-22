@@ -8,7 +8,11 @@ import NodeResolver from '@parcel/node-resolver-core';
 const WEBPACK_IMPORT_REGEX = /^\w+-loader(?:\?\S*)?!/;
 
 export default (new Resolver({
-  loadConfig({options, logger}) {
+  async loadConfig({config, options, logger}) {
+    let conf = await config.getConfig([], {
+      packageKey: '@parcel/resolver-default',
+    });
+
     return new NodeResolver({
       fs: options.inputFS,
       projectRoot: options.projectRoot,
@@ -16,6 +20,7 @@ export default (new Resolver({
       packageManager: options.packageManager,
       shouldAutoInstall: options.shouldAutoInstall,
       logger,
+      packageExports: conf?.contents?.packageExports ?? false,
     });
   },
   resolve({dependency, specifier, config: resolver}) {

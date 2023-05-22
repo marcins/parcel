@@ -34,6 +34,7 @@
     "@parcel/logger": "2.3.5",
     "@parcel/package-manager": "2.3.5",
     "@parcel/plugin": "2.3.5",
+    "@parcel/profiler": "2.3.5",
     "@parcel/source-map": "^2.1.1",
     "@parcel/types": "2.3.5",
     "@parcel/utils": "2.3.5",
