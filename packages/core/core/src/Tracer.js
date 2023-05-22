@@ -36,6 +36,7 @@ export default class Tracer implements ITracer {
     const start = performance.now();
     return {
       end: () => {
+        // $FlowFixMe Until we remedy two tracers
         this._report({
           name,
           pid,
