@@ -27,7 +27,9 @@ describe('transformImportAttributesWebpack', () => {
       transform(`
         import('./foo', {preload: true});
       `),
-      `import( /* webpackPreload: true */'./foo');`,
+      `import(
+/* webpackPreload: true */
+'./foo');`,
     );
   });
 
@@ -36,7 +38,9 @@ describe('transformImportAttributesWebpack', () => {
       transform(`
         import('./foo', {prefetch: true});
       `),
-      `import( /* webpackPrefetch: true */'./foo');`,
+      `import(
+/* webpackPrefetch: true */
+'./foo');`,
     );
   });
 
@@ -45,7 +49,9 @@ describe('transformImportAttributesWebpack', () => {
       transform(`
         import('./foo', {foobar: true, preload: true});
       `),
-      `import( /* webpackPreload: true */'./foo', {
+      `import(
+/* webpackPreload: true */
+'./foo', {
   foobar: true
 });`,
     );
@@ -58,6 +64,7 @@ describe('transformImportAttributesWebpack', () => {
       `),
       `import(
 /* webpackPreload: true */
+
 /* webpackPrefetch: true */
 './foo');`,
     );
@@ -70,6 +77,7 @@ describe('transformImportAttributesWebpack', () => {
       `),
       `import(
 /* webpackPreload: true */
+
 /* webpackChunkName: foobar */
 './foo');`,
     );
@@ -82,6 +90,7 @@ describe('transformImportAttributesWebpack', () => {
       `),
       `import(
 /* webpackPrefetch: true */
+
 /* webpackChunkName: foobar */
 './foo');`,
     );
