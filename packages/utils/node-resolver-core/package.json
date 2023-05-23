@@ -30,7 +30,7 @@
   },
   "files": [
     "lib",
-    "native.js",
+    "index.js",
     "*.node"
   ],
   "dependencies": {

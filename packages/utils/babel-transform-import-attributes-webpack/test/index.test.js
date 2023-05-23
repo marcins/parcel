@@ -82,7 +82,6 @@ describe('transformImportAttributesWebpack', () => {
       `),
       `import(
 /* webpackPrefetch: true */
-
 /* webpackChunkName: foobar */
 './foo');`,
     );
