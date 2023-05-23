@@ -15,11 +15,9 @@ if (process.platform === 'linux') {
 let name = `./parcel-resolver.${parts.join('-')}.node`;
 if (process.env.PARCEL_BUILD_ENV === 'production') {
   // ATLASSIAN: Used upstream published builds
-  module.exports = require('self-published/index.js');
+  module.exports = require('self-published/native.js');
 } else if (require('fs').existsSync(require('path').join(__dirname, name))) {
   module.exports = require(name);
 } else {
-  module.exports = require('self-published/index.js');
+  module.exports = require('self-published/native.js');
 }
-
-module.exports.init = Promise.resolve();
