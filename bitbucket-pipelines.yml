@@ -34,6 +34,7 @@ definitions:
           - pipe: docker://atlassian/artifactory-sidekick:latest
           - . .artifactory/activate.sh
           - yarn install --frozen-lockfile
+          - yarn build
           - yarn run test:integration-ci
     - step: &build-release-parcel
         name: Build and Release Parcel

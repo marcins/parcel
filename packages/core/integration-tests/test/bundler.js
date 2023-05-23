@@ -277,8 +277,11 @@ describe('bundler', function () {
         assets: ['a.html'],
       },
       {
+        assets: ['b.html'],
+      },
+      {
         assets: [
-          'index.js',
+          'a.js',
           'bundle-url.js',
           'cacheLoader.js',
           'js-loader.js',
@@ -286,12 +289,6 @@ describe('bundler', function () {
           // is unknown. This can be ignored when deleting the fork
           'bundle-manifest.js',
         ],
-      },
-      {
-        assets: ['b.html'],
-      },
-      {
-        assets: ['a.js', 'bundle-url.js', 'cacheLoader.js', 'js-loader.js'],
       },
       {
         assets: ['bundle-manifest.js'], // manifest bundle
@@ -303,10 +300,16 @@ describe('bundler', function () {
           'cacheLoader.js',
           'js-loader.js',
           'esmodule-helpers.js',
+          // ATLASSIAN: This is only added in the internal fork. It doesn't cause an issue but the reason
+          // is unknown. This can be ignored when deleting the fork
+          'bundle-manifest.js',
         ],
       },
       {
         assets: ['bundle-manifest.js'], // manifest bundle
+      },
+      {
+        assets: ['c.js'],
       },
     ]);
 
