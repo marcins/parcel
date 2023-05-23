@@ -291,7 +291,6 @@ describe('TargetResolver', () => {
           ),
           distEntry: 'index.js',
           publicUrl: '/',
-          stableEntries: undefined,
           env: {
             id: 'f7c9644283a8698f',
             context: 'node',
@@ -369,7 +368,6 @@ describe('TargetResolver', () => {
           distDir: 'fixtures/custom-targets/dist/browserModern',
           distEntry: 'index.js',
           publicUrl: '/',
-          stableEntries: undefined,
           env: {
             id: '1f28e9ceaf633d83',
             context: 'browser',
@@ -404,7 +402,6 @@ describe('TargetResolver', () => {
           distDir: 'fixtures/custom-targets/dist/browserLegacy',
           distEntry: 'index.js',
           publicUrl: '/',
-          stableEntries: undefined,
           env: {
             id: '767bf6e6b675c4f3',
             context: 'browser',
@@ -490,7 +487,6 @@ describe('TargetResolver', () => {
           distDir: 'fixtures/custom-targets/dist/browserModern',
           distEntry: 'index.js',
           publicUrl: '/',
-          stableEntries: undefined,
           env: {
             id: 'ed7c0e65adee71c9',
             context: 'browser',
@@ -525,7 +521,6 @@ describe('TargetResolver', () => {
           distDir: 'fixtures/custom-targets/dist/browserLegacy',
           distEntry: 'index.js',
           publicUrl: '/',
-          stableEntries: undefined,
           env: {
             id: 'f7692543e59e4c0a',
             context: 'browser',
@@ -585,7 +580,6 @@ describe('TargetResolver', () => {
             sourceType: 'module',
           },
           loc: undefined,
-          stableEntries: undefined,
         },
       ],
     );
@@ -1062,7 +1056,6 @@ describe('TargetResolver', () => {
         distDir: relative(path.join(fixture, 'dist')),
         distEntry: 'index.mjs',
         publicUrl: '/',
-        stableEntries: undefined,
         env: {
           id: '439701173a9199ea',
           context: 'browser',
@@ -1108,7 +1101,6 @@ describe('TargetResolver', () => {
         distDir: relative(path.join(fixture, 'dist')),
         distEntry: 'index.js',
         publicUrl: '/',
-        stableEntries: undefined,
         env: {
           id: '439701173a9199ea',
           context: 'browser',
@@ -1326,7 +1318,6 @@ describe('TargetResolver', () => {
             sourceType: 'module',
           },
           loc: undefined,
-          stableEntries: undefined,
         },
       ],
     );
@@ -1365,7 +1356,6 @@ describe('TargetResolver', () => {
             sourceType: 'module',
           },
           loc: undefined,
-          stableEntries: undefined,
         },
         {
           name: 'browserLegacy',
@@ -1394,7 +1384,6 @@ describe('TargetResolver', () => {
             sourceType: 'module',
           },
           loc: undefined,
-          stableEntries: undefined,
         },
       ],
     );

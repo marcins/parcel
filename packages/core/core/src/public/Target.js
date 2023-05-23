@@ -64,10 +64,6 @@ export default class Target implements ITarget {
     );
   }
 
-  get stableEntries(): boolean {
-    return this.#target.stableEntries !== false;
-  }
-
   // $FlowFixMe[unsupported-syntax]
   [inspect](): string {
     return `Target(${this.name} - ${this.env[inspect]()})`;

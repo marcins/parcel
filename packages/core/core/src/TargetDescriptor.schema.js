@@ -109,9 +109,6 @@ export const PACKAGE_DESCRIPTOR_SCHEMA: SchemaObject = {
     optimize: {
       type: 'boolean',
     },
-    stableEntries: {
-      type: 'boolean',
-    },
     scopeHoist: {
       type: 'boolean',
     },

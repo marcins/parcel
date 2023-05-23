@@ -100,7 +100,6 @@ export interface Target {
   /** The output folder */
   +distDir: FilePath;
   +env: Environment;
-  +stableEntries: boolean;
   +name: string;
   +publicUrl: string;
   /** The location that created this Target, e.g. `package.json#main`*/
@@ -136,7 +135,6 @@ export type PackageTargetDescriptor = {|
   +publicUrl?: string,
   +distDir?: FilePath,
   +sourceMap?: boolean | TargetSourceMapOptions,
-  +stableEntries?: boolean,
   +isLibrary?: boolean,
   +optimize?: boolean,
   +scopeHoist?: boolean,

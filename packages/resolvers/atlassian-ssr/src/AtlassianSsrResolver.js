@@ -31,7 +31,6 @@ export default (new Resolver({
       resolver: new NodeResolver({
         fs: options.inputFS,
         projectRoot: options.projectRoot,
-        // $FlowFixMe Can be removed after the `stableEntries` fetaure is gone
         packageManager: options.packageManager,
         shouldAutoInstall: options.shouldAutoInstall,
         logger,

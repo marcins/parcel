@@ -81,8 +81,7 @@ export default (new Resolver({
         fs: options.inputFS,
         projectRoot: options.projectRoot,
         packageManager: options.shouldAutoInstall
-          ? // $FlowFixMe Can be removed after the `stableEntries` fetaure is gone
-            options.packageManager
+          ? options.packageManager
           : undefined,
         logger,
       });

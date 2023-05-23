@@ -17,7 +17,7 @@ const ALLOWED_EXTENSIONS = {
 };
 
 export default (new Namer({
-  name({bundle, bundleGraph, options}) {
+  name({bundle, bundleGraph}) {
     let bundleGroup = bundleGraph.getBundleGroupsContainingBundle(bundle)[0];
     let bundleGroupBundles = bundleGraph.getBundlesInBundleGroup(bundleGroup, {
       includeInline: true,
@@ -96,14 +96,7 @@ export default (new Namer({
       bundleGroup.entryAssetId,
       bundleGraph.getEntryRoot(bundle.target),
     );
-    if (
-      // ATLASSIAN: Apply hash digests to entry bundles in production browser builds
-      // when stableEntries is enabled.
-      (!bundle.target.stableEntries &&
-        options.mode === 'production' &&
-        bundle.env.context === 'browser') ||
-      !bundle.needsStableName
-    ) {
+    if (!bundle.needsStableName) {
       name += '.' + bundle.hashReference;
     }
 
