@@ -753,6 +753,7 @@ export default class BundleGraph {
     };
   }
 
+  // eslint-disable-next-line no-unused-vars
   getReferencedBundle(dependency: Dependency, fromBundle: Bundle): ?Bundle {
     let dependencyNodeId = this._graph.getNodeIdByContentKey(dependency.id);
 
@@ -772,24 +773,18 @@ export default class BundleGraph {
       });
     }
 
-    // Otherwise, it may be a reference to another asset in the same bundle group.
-    // Resolve the dependency to an asset, and look for it in one of the referenced bundles.
-    let referencedBundles = this.getReferencedBundles(fromBundle, {
-      includeInline: true,
-    });
-    let referenced = this._graph
+    // Otherwise, find an attached bundle via a reference edge (e.g. from createAssetReference).
+    let bundleNode = this._graph
       .getNodeIdsConnectedFrom(
         dependencyNodeId,
         bundleGraphEdgeTypes.references,
       )
       .map(id => nullthrows(this._graph.getNode(id)))
-      .find(node => node.type === 'asset');
+      .find(node => node.type === 'bundle');
 
-    if (referenced != null) {
-      invariant(referenced.type === 'asset');
-      return referencedBundles.find(b =>
-        this.bundleHasAsset(b, referenced.value),
-      );
+    if (bundleNode) {
+      invariant(bundleNode.type === 'bundle');
+      return bundleNode.value;
     }
   }
 
@@ -1242,20 +1237,16 @@ export default class BundleGraph {
     return bundleGroups.every(bundleGroup => {
       // If the asset is in any sibling bundles of the original bundle, it is reachable.
       let bundles = this.getBundlesInBundleGroup(bundleGroup);
-      // ATLASSIAN: To avoid circular bundle references until the scope hoisting
-      // packager can handle them, only deduplicate from preceding siblings.
-      // TODO: Remove when the scope hoisting packager can handle cyclic bundle references.
-      for (let b of bundles) {
-        if (b.id === bundle.id) {
-          break;
-        }
-        if (
-          b.bundleBehavior !== BundleBehavior.isolated &&
-          b.bundleBehavior !== BundleBehavior.inline &&
-          this.bundleHasAsset(b, asset)
-        ) {
-          return true;
-        }
+      if (
+        bundles.some(
+          b =>
+            b.id !== bundle.id &&
+            b.bundleBehavior !== BundleBehavior.isolated &&
+            b.bundleBehavior !== BundleBehavior.inline &&
+            this.bundleHasAsset(b, asset),
+        )
+      ) {
+        return true;
       }
 
       // Get a list of parent bundle nodes pointing to the bundle group
@@ -1295,21 +1286,17 @@ export default class BundleGraph {
 
             if (node.type === 'bundle_group') {
               let childBundles = this.getBundlesInBundleGroup(node.value);
-              // ATLASSIAN: To avoid circular bundle references until the scope hoisting
-              // packager can handle them, only deduplicate from preceding siblings.
-              // TODO: Remove when the scope hoisting packager can handle cyclic bundle references.
-              for (let b of childBundles) {
-                if (b.id === bundle.id) {
-                  break;
-                }
-                if (
-                  b.bundleBehavior !== BundleBehavior.isolated &&
-                  b.bundleBehavior !== BundleBehavior.inline &&
-                  this.bundleHasAsset(b, asset)
-                ) {
-                  actions.skipChildren();
-                  break;
-                }
+              if (
+                childBundles.some(
+                  b =>
+                    b.id !== bundle.id &&
+                    b.bundleBehavior !== BundleBehavior.isolated &&
+                    b.bundleBehavior !== BundleBehavior.inline &&
+                    this.bundleHasAsset(b, asset),
+                )
+              ) {
+                actions.skipChildren();
+                return;
               }
             }
           },
@@ -1568,16 +1555,14 @@ export default class BundleGraph {
         }
       },
       startNodeId: this._graph.getNodeIdByContentKey(bundle.id),
-      getChildren: nodeId => {
+      getChildren: nodeId =>
         // Shared bundles seem to depend on being used in the opposite order
         // they were added.
         // TODO: Should this be the case?
-
-        return this._graph.getNodeIdsConnectedFrom(
+        this._graph.getNodeIdsConnectedFrom(
           nodeId,
           bundleGraphEdgeTypes.references,
-        );
-      },
+        ),
     });
 
     return [...referencedBundles];

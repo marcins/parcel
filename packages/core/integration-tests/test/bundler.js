@@ -273,15 +273,7 @@ describe('bundler', function () {
         assets: ['index.html'],
       },
       {
-        assets: [
-          'index.js',
-          'bundle-url.js',
-          'cacheLoader.js',
-          'js-loader.js',
-          // ATLASSIAN: This is only added in the internal fork. It doesn't cause an issue but the reason
-          // is unknown. This can be ignored when deleting the fork
-          'bundle-manifest.js',
-        ],
+        assets: ['index.js', 'bundle-url.js', 'cacheLoader.js', 'js-loader.js'],
       },
       {
         assets: ['bundle-manifest.js'],
