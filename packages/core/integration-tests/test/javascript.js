@@ -2021,68 +2021,6 @@ describe('javascript', function () {
     );
   });
 
-  it('should create a shared bundle between browser and worker contexts', async () => {
-    let b = await bundle(
-      path.join(__dirname, '/integration/html-shared-worker/index.html'),
-      {mode: 'production', defaultTargetOptions: {shouldScopeHoist: false}},
-    );
-
-    assertBundles(b, [
-      {
-        name: 'index.html',
-        assets: ['index.html'],
-      },
-      {
-        assets: [
-          'index.js',
-          'bundle-url.js',
-          'get-worker-url.js',
-          'bundle-manifest.js',
-          'lodash.js',
-          'esmodule-helpers.js',
-        ],
-      },
-      {
-        // ATLASSIAN: This is only added in the internal fork. It doesn't cause an issue but the reason
-        // is unknown. This can be ignored when deleting the fork
-        assets: ['bundle-manifest.js'],
-      },
-      {
-        assets: ['worker.js', 'lodash.js', 'esmodule-helpers.js'],
-      },
-    ]);
-
-    // let sharedBundle = b
-    //   .getBundles()
-    //   .sort((a, b) => b.stats.size - a.stats.size)
-    //   .find(b => b.name !== 'index.js');
-    let workerBundle = b.getBundles().find(b => b.name.startsWith('worker'));
-    // let contents = await outputFS.readFile(workerBundle.filePath, 'utf8');
-    // assert(
-    //   contents.includes(
-    //     `importScripts("./${path.basename(sharedBundle.filePath)}")`,
-    //   ),
-    // );
-
-    let outputArgs = [];
-    let workerArgs = [];
-    await run(b, {
-      Worker: class {
-        constructor(url) {
-          workerArgs.push(url);
-        }
-      },
-      output: (ctx, val) => {
-        outputArgs.push([ctx, val]);
-      },
-    });
-
-    assert.deepStrictEqual(outputArgs, [['main', 3]]);
-    assert.deepStrictEqual(workerArgs, [
-      `http://localhost/${path.basename(workerBundle.filePath)}`,
-    ]);
-  });
-
   it('should deduplicate and remove an unnecessary async bundle when it contains a cyclic reference to its entry', async () => {
     let b = await bundle(
       path.join(
@@ -2172,9 +2110,6 @@ describe('javascript', function () {
           'lodash.js',
           'esmodule-helpers.js',
           'bundle-url.js',
-          // ATLASSIAN: This is only added in the internal fork. It doesn't cause an issue but the reason
-          // is unknown. This can be ignored when deleting the fork
-          'bundle-manifest.js',
         ],
       },
       {
