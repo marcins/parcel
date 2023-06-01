@@ -8,7 +8,7 @@
       "@parcel/transformer-workerize",
       "..."
     ],
-    "*.{js,mjs,jsm,jsx,es6,ts,tsx}": [
+    "*.{js,mjs,jsm,jsx,es6,cjs,ts,tsx}": [
       "@parcel/transformer-sync-dynamic-import",
       "@parcel/transformer-babel",
       "@parcel/transformer-js"
