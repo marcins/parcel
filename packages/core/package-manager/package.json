@@ -1,6 +1,6 @@
 {
   "name": "@parcel/package-manager",
-  "version": "2.3.6",
+  "version": "2.3.7",
   "description": "Blazing fast, zero configuration web application bundler",
   "license": "MIT",
   "publishConfig": {
@@ -42,13 +42,13 @@
     }
   },
   "dependencies": {
-    "@parcel/diagnostic": "2.3.6",
-    "@parcel/fs": "2.3.6",
-    "@parcel/logger": "2.3.6",
-    "@parcel/node-resolver-core": "2.3.6",
-    "@parcel/types": "2.3.6",
-    "@parcel/utils": "2.3.6",
-    "@parcel/workers": "2.3.6",
+    "@parcel/diagnostic": "2.3.7",
+    "@parcel/fs": "2.3.7",
+    "@parcel/logger": "2.3.7",
+    "@parcel/node-resolver-core": "2.3.7",
+    "@parcel/types": "2.3.7",
+    "@parcel/utils": "2.3.7",
+    "@parcel/workers": "2.3.7",
     "semver": "^5.7.1"
   },
   "devDependencies": {
