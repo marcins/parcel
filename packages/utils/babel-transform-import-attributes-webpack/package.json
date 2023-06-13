@@ -1,6 +1,6 @@
 {
   "name": "@atlassian/babel-plugin-transform-import-attributes-webpack",
-  "version": "2.3.7",
+  "version": "2.3.8",
   "main": "src/index.js",
   "scripts": {
     "test": "mocha"
