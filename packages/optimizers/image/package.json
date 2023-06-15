@@ -36,7 +36,7 @@
     "@parcel/plugin": "2.3.8",
     "@parcel/utils": "2.3.8",
     "@parcel/workers": "2.3.8",
-    "self-published": "npm:@parcel/optimizer-image@2.8.4-nightly.2937"
+    "self-published": "npm:@parcel/optimizer-image@2.9.3-nightly.2954"
   },
   "peerDependencies": {
     "@parcel/core": "^2.9.2"
