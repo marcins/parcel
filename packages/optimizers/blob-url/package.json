@@ -1,6 +1,6 @@
 {
   "name": "@parcel/optimizer-blob-url",
-  "version": "2.3.8",
+  "version": "2.3.9",
   "license": "MIT",
   "publishConfig": {
     "access": "public"
@@ -20,7 +20,7 @@
     "parcel": "^2.3.1"
   },
   "dependencies": {
-    "@parcel/plugin": "2.3.8",
-    "@parcel/utils": "2.3.8"
+    "@parcel/plugin": "2.3.9",
+    "@parcel/utils": "2.3.9"
   }
 }

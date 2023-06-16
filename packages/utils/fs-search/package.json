@@ -1,6 +1,6 @@
 {
   "name": "@parcel/fs-search",
-  "version": "2.3.8",
+  "version": "2.3.9",
   "license": "MIT",
   "main": "index.js",
   "publishConfig": {

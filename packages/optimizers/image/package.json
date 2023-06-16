@@ -1,6 +1,6 @@
 {
   "name": "@parcel/optimizer-image",
-  "version": "2.3.8",
+  "version": "2.3.9",
   "license": "MIT",
   "main": "lib/ImageOptimizer.js",
   "source": "src/ImageOptimizer.js",
@@ -32,10 +32,10 @@
     "build-release": "napi build --platform --release --js native.js --dts native.d.ts"
   },
   "dependencies": {
-    "@parcel/diagnostic": "2.3.8",
-    "@parcel/plugin": "2.3.8",
-    "@parcel/utils": "2.3.8",
-    "@parcel/workers": "2.3.8",
+    "@parcel/diagnostic": "2.3.9",
+    "@parcel/plugin": "2.3.9",
+    "@parcel/utils": "2.3.9",
+    "@parcel/workers": "2.3.9",
     "self-published": "npm:@parcel/optimizer-image@2.9.3-nightly.2954"
   },
   "peerDependencies": {

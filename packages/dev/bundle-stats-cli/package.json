@@ -1,6 +1,6 @@
 {
   "name": "bundle-stats-cli",
-  "version": "2.3.8",
+  "version": "2.3.9",
   "private": true,
   "main": "lib/cli.js",
   "source": "src/cli.js",
@@ -12,14 +12,14 @@
     "parcel": "^2.3.3"
   },
   "dependencies": {
-    "@atlassian/parcel-reporter-bundle-stats": "2.3.8",
-    "@parcel/core": "2.3.8",
-    "@parcel/utils": "2.3.8",
+    "@atlassian/parcel-reporter-bundle-stats": "2.3.9",
+    "@parcel/core": "2.3.9",
+    "@parcel/utils": "2.3.9",
     "commander": "^7.0.0",
-    "parcel-query": "2.3.8"
+    "parcel-query": "2.3.9"
   },
   "devDependencies": {
-    "@parcel/babel-register": "2.3.8",
-    "@parcel/types": "2.3.8"
+    "@parcel/babel-register": "2.3.9",
+    "@parcel/types": "2.3.9"
   }
 }
