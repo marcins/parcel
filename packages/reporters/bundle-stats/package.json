@@ -1,6 +1,6 @@
 {
   "name": "@atlassian/parcel-reporter-bundle-stats",
-  "version": "2.3.9",
+  "version": "2.3.10",
   "publishConfig": {
     "access": "public"
   },
@@ -14,11 +14,11 @@
     "parcel": "^2.3.1"
   },
   "dependencies": {
-    "@parcel/core": "2.3.9",
-    "@parcel/plugin": "2.3.9",
-    "@parcel/utils": "2.3.9"
+    "@parcel/core": "2.3.10",
+    "@parcel/plugin": "2.3.10",
+    "@parcel/utils": "2.3.10"
   },
   "devDependencies": {
-    "@parcel/types": "2.3.9"
+    "@parcel/types": "2.3.10"
   }
 }

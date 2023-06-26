@@ -1,6 +1,6 @@
 {
   "name": "@parcel/reporter-cli",
-  "version": "2.3.9",
+  "version": "2.3.10",
   "license": "MIT",
   "publishConfig": {
     "access": "public"
@@ -31,9 +31,9 @@
     }
   },
   "dependencies": {
-    "@parcel/plugin": "2.3.9",
-    "@parcel/types": "2.3.9",
-    "@parcel/utils": "2.3.9",
+    "@parcel/plugin": "2.3.10",
+    "@parcel/types": "2.3.10",
+    "@parcel/utils": "2.3.10",
     "chalk": "^4.1.0",
     "term-size": "^2.2.1"
   },

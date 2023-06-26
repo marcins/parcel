@@ -1,6 +1,6 @@
 {
   "name": "@parcel/packager-js",
-  "version": "2.3.9",
+  "version": "2.3.10",
   "license": "MIT",
   "publishConfig": {
     "access": "public"
@@ -20,11 +20,11 @@
     "parcel": "^2.3.1"
   },
   "dependencies": {
-    "@parcel/diagnostic": "2.3.9",
-    "@parcel/hash": "2.3.9",
-    "@parcel/plugin": "2.3.9",
+    "@parcel/diagnostic": "2.3.10",
+    "@parcel/hash": "2.3.10",
+    "@parcel/plugin": "2.3.10",
     "@parcel/source-map": "^2.1.1",
-    "@parcel/utils": "2.3.9",
+    "@parcel/utils": "2.3.10",
     "globals": "^13.2.0",
     "nullthrows": "^1.1.1"
   }

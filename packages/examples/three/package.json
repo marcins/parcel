@@ -1,6 +1,6 @@
 {
   "name": "@parcel/three-js-stresstest",
-  "version": "2.3.9",
+  "version": "2.3.10",
   "license": "MIT",
   "private": true,
   "scripts": {
@@ -27,9 +27,9 @@
     }
   },
   "devDependencies": {
-    "@parcel/config-default": "2.3.9",
-    "@parcel/core": "2.3.9",
-    "@parcel/optimizer-esbuild": "2.3.9",
-    "parcel": "2.3.9"
+    "@parcel/config-default": "2.3.10",
+    "@parcel/core": "2.3.10",
+    "@parcel/optimizer-esbuild": "2.3.10",
+    "parcel": "2.3.10"
   }
 }

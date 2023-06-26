@@ -1,6 +1,6 @@
 {
   "name": "@parcel/transformer-html",
-  "version": "2.3.9",
+  "version": "2.3.10",
   "license": "MIT",
   "publishConfig": {
     "access": "public"
@@ -20,9 +20,9 @@
     "parcel": "^2.3.1"
   },
   "dependencies": {
-    "@parcel/diagnostic": "2.3.9",
-    "@parcel/hash": "2.3.9",
-    "@parcel/plugin": "2.3.9",
+    "@parcel/diagnostic": "2.3.10",
+    "@parcel/hash": "2.3.10",
+    "@parcel/plugin": "2.3.10",
     "nullthrows": "^1.1.1",
     "posthtml": "^0.16.5",
     "posthtml-parser": "^0.10.1",
