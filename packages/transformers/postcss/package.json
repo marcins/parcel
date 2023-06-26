@@ -1,6 +1,6 @@
 {
   "name": "@parcel/transformer-postcss",
-  "version": "2.3.11",
+  "version": "2.3.12",
   "license": "MIT",
   "publishConfig": {
     "access": "public"
@@ -20,10 +20,10 @@
     "parcel": "^2.3.1"
   },
   "dependencies": {
-    "@parcel/diagnostic": "2.3.11",
-    "@parcel/hash": "2.3.11",
-    "@parcel/plugin": "2.3.11",
-    "@parcel/utils": "2.3.11",
+    "@parcel/diagnostic": "2.3.12",
+    "@parcel/hash": "2.3.12",
+    "@parcel/plugin": "2.3.12",
+    "@parcel/utils": "2.3.12",
     "clone": "^2.1.1",
     "nullthrows": "^1.1.1",
     "postcss-value-parser": "^4.2.0",
