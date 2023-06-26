@@ -1,6 +1,6 @@
 {
   "name": "@parcel/bundler-default",
-  "version": "2.3.10",
+  "version": "2.3.11",
   "license": "MIT",
   "publishConfig": {
     "access": "public"
@@ -20,11 +20,11 @@
     "parcel": "^2.3.1"
   },
   "dependencies": {
-    "@parcel/diagnostic": "2.3.10",
-    "@parcel/graph": "2.3.10",
-    "@parcel/hash": "2.3.10",
-    "@parcel/plugin": "2.3.10",
-    "@parcel/utils": "2.3.10",
+    "@parcel/diagnostic": "2.3.11",
+    "@parcel/graph": "2.3.11",
+    "@parcel/hash": "2.3.11",
+    "@parcel/plugin": "2.3.11",
+    "@parcel/utils": "2.3.11",
     "nullthrows": "^1.1.1"
   }
 }
