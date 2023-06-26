@@ -34,6 +34,7 @@ export default (new Resolver({
         packageManager: options.packageManager,
         shouldAutoInstall: options.shouldAutoInstall,
         logger,
+        mode: options.mode,
       }),
       aliasMap: createAliasMap(options.projectRoot),
     };
