@@ -32,7 +32,7 @@
     "build-release": "napi build --platform --release"
   },
   "dependencies": {
-    "self-published": "npm:@parcel/hash@2.9.3-nightly.2954",
+    "self-published": "npm:@parcel/hash@2.9.4-nightly.2958",
     "xxhash-wasm": "^0.4.2"
   },
   "devDependencies": {
