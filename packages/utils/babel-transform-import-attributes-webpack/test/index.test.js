@@ -1,6 +1,9 @@
 const assert = require('assert');
 const babel = require('@babel/core');
 
+/** @typedef {import('@babel/core').BabelFileResult} BabelFileResult */
+/** @typedef {import('@babel/core').TransformOptions} TransformOptions */
+
 const importAttributesPlugin = require.resolve(
   '@babel/plugin-syntax-module-attributes',
 );
@@ -100,9 +103,16 @@ describe('transformImportAttributesWebpack', () => {
   });
 });
 
-function transform(input) {
-  return babel.transformSync(input, {
+/** @returns {string | null} */
+function transform(/** @type {string} */ input) {
+  /** @type {TransformOptions} */
+  const options = {
     configFile: false,
     plugins: [[importAttributesPlugin, {version: 'may-2020'}], plugin],
-  }).code;
+  };
+  const result = babel.transformSync(input, options)?.code;
+  if (!result) {
+    return null;
+  }
+  return result;
 }

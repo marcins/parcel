@@ -1,11 +1,18 @@
 {
   "name": "@atlassian/babel-plugin-transform-import-attributes-webpack",
   "version": "2.3.12",
-  "main": "src/index.js",
+  "main": "pkg/index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "check-ts": "npx tsc -p ./tsconfig.json"
   },
   "devDependencies": {
-    "@babel/plugin-syntax-module-attributes": "^7.10.4"
+    "@babel/core": "^7.12.0",
+    "@babel/plugin-syntax-module-attributes": "^7.10.4",
+    "@babel/types": "^7.22.5",
+    "@types/babel__core": "^7.20.1",
+    "@types/mocha": "^10.0.1",
+    "mocha": "^8.3.0",
+    "typescript": ">=3.0.0"
   }
 }
