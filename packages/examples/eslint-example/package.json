@@ -21,6 +21,6 @@
     "@parcel/babel-register": "2.3.12",
     "@parcel/core": "2.3.12",
     "@parcel/validator-eslint": "2.3.12",
-    "parcel": "2.5.0"
+    "parcel": "2.3.12"
   }
 }
