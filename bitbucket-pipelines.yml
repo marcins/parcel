@@ -12,6 +12,14 @@ definitions:
           - . .artifactory/activate.sh
           - yarn install --frozen-lockfile
           - yarn run flow check
+    - step: &typescript
+        name: Run TypeScript
+        script:
+          - pipe: docker://atlassian/artifactory-sidekick:latest
+          - . .artifactory/activate.sh
+          - yarn install --frozen-lockfile
+          - yarn build
+          - yarn run build-ts
     - step: &lint
         name: Run lint
         script:
@@ -19,6 +27,7 @@ definitions:
           - . .artifactory/activate.sh
           - yarn install --frozen-lockfile
           - yarn run lint
+          - npx prettier "./packages/*/*/pkg/**/*.{js,json,md}" --list-different --no-error-on-unmatched-pattern
     - step: &test-unit
         name: Run unit tests
         size: 2x
@@ -75,6 +84,7 @@ pipelines:
   default:
     - parallel:
         - step: *flow
+        - step: *typescript
         - step: *lint
         - step: *test-unit
         - step: *test-integration
@@ -83,6 +93,7 @@ pipelines:
     '*':
       - parallel:
           - step: *flow
+          - step: *typescript
           - step: *lint
           - step: *test-unit
           - step: *test-integration
