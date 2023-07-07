@@ -1,13 +1,15 @@
-// @flow
+const assert = require('assert');
+const config = require('../index.json');
 
-import assert from 'assert';
-
-import config from '../';
-import packageJson from '../package.json';
+/** @type {typeof import('../package.json') & { parcelDependencies?: Record<string, any> }} */
+const packageJson = require('../package.json');
 
 describe('@parcel/config-atlassian', () => {
-  let packageJsonDependencyNames: Set<string>;
-  let configPackageReferences: Set<string>;
+  /** @type {Set<string>} */
+  let packageJsonDependencyNames;
+
+  /** @type {Set<string>} */
+  let configPackageReferences;
 
   before(() => {
     packageJsonDependencyNames = new Set([
@@ -26,9 +28,9 @@ describe('@parcel/config-atlassian', () => {
         }
       }
 
-      // Assert with deepEqual rather than e.g. missingReferences.size as the
+      // Assert with deepStrictEqual rather than e.g. missingReferences.size as the
       // assertion message with deepEqual enumerates the differences nicely
-      assert.deepEqual(missingReferences, []);
+      assert.deepStrictEqual(missingReferences, []);
     });
 
     it('does not include packages not referenced in the config', () => {
@@ -39,15 +41,16 @@ describe('@parcel/config-atlassian', () => {
         }
       }
 
-      assert.deepEqual(unnecessaryDependencies, []);
+      assert.deepStrictEqual(unnecessaryDependencies, []);
     });
   });
 });
 
+/** @returns {Set<string>} */
 function collectConfigPackageReferences(
-  configSection: mixed,
-  references: Set<string> = new Set(),
-): Set<string> {
+  /** @type {any} */ configSection,
+  /** @type {Set<string>} */ references = new Set(),
+) {
   if (configSection == null || typeof configSection !== 'object') {
     throw new TypeError('Expected config section to be an object or an array');
   }

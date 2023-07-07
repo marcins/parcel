@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    // JSDoc
+    "checkJs": true,
+    "allowJs": true,
+    "noEmit": true,
+    // Node Config
+    "target": "ESNext",
+    "module": "CommonJS",
+    "moduleResolution": "Node16",
+    "lib": ["ESNext"],
+    "types": ["node", "mocha"],
+    "resolveJsonModule": true,
+    // Super strict
+    "strict": true,
+    "allowUnusedLabels": false,
+    "allowUnreachableCode": false,
+    "exactOptionalPropertyTypes": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noUncheckedIndexedAccess": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "forceConsistentCasingInFileNames": true,
+    // Misc
+    "skipLibCheck": true
+  },
+  "include": ["./test/**/*.js"]
+}
