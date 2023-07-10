@@ -25,25 +25,29 @@ const reporter = new Reporter({
       }
       res.entryBundles.add(bundle);
       actions.skipChildren();
-    });
+    }, undefined);
 
     await Promise.all(
       Array.from(entryBundlesByTarget).map(
         async ([, {target, entryBundles}]) => {
-          const manifest = {};
+          const /** @type {Map<string, string[]>} */ manifest = new Map();
           for (const entryBundle of entryBundles) {
             const mainEntry = entryBundle.getMainEntry();
             if (mainEntry != null) {
-              manifest[path.basename(mainEntry.filePath)] = bundleGraph
-                .getReferencedBundles(entryBundle)
-                .concat([entryBundle])
-                .map(b => path.basename(b.filePath));
+              manifest.set(
+                path.basename(mainEntry.filePath),
+                bundleGraph
+                  .getReferencedBundles(entryBundle)
+                  .concat([entryBundle])
+                  .map(b => path.basename(b.filePath)),
+              );
             }
           }
 
           await options.outputFS.writeFile(
             path.join(target.distDir, 'parcel-manifest.json'),
             JSON.stringify(manifest, null, 2),
+            undefined,
           );
         },
       ),
