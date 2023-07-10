@@ -2,6 +2,9 @@ const assert = require('assert');
 const config = require('../index.json');
 const packageJson = require('../package.json');
 
+// console.log(config);
+// console.log(packageJson);
+
 describe('@parcel/config-atlassian-ssr', () => {
   let /** @type {Set<string>} */ packageJsonDependencyNames;
   let /** @type {Set<string>} */ configPackageReferences;
@@ -18,6 +21,7 @@ describe('@parcel/config-atlassian-ssr', () => {
       const missingReferences = [];
       for (const reference of configPackageReferences) {
         if (!packageJsonDependencyNames.has(reference)) {
+          console.log('missing reference', reference);
           missingReferences.push(reference);
         }
       }
@@ -55,7 +59,6 @@ function collectConfigPackageReferences(configSection, references = new Set()) {
       if (value === '...') {
         continue;
       }
-
       references.add(value);
     } else if (configSection != null && typeof configSection === 'object') {
       collectConfigPackageReferences(value, references);
