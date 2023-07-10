@@ -1,7 +1,5 @@
-/**
- * @typedef {import('@parcel/types').PackagedBundle} PackagedBundle
- * @typedef {import('@parcel/types').Target} Target
- */
+/** @typedef {import('@parcel/types').PackagedBundle} PackagedBundle */
+/** @typedef {import('@parcel/types').Target} Target */
 
 const path = require('path');
 const {Reporter} = require('@parcel/plugin');
