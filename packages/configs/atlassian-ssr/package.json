@@ -19,8 +19,8 @@
     "@parcel/config-default": "2.3.12",
     "@parcel/reporter-bundle-analyzer": "2.3.12",
     "@parcel/reporter-dev-server": "2.3.12",
-    "@atlassian/parcel-reporter-manifest": "2.3.12",
-    "@atlassian/parcel-resolver-atlassian-ssr": "2.3.12",
+    "@parcel/reporter-manifest": "2.3.12",
+    "@parcel/resolver-atlassian-ssr": "2.3.12",
     "@parcel/transformer-babel": "2.3.12",
     "@parcel/transformer-coffeescript": "2.3.12",
     "@parcel/transformer-css": "2.3.12",
@@ -31,7 +31,7 @@
     "@parcel/transformer-json": "2.3.12",
     "@parcel/transformer-less": "2.3.12",
     "@parcel/transformer-mdx": "2.3.12",
-    "@atlassian/parcel-transformer-not-splittable": "2.3.12",
+    "@parcel/transformer-not-splittable": "2.3.12",
     "@parcel/transformer-postcss": "2.3.12",
     "@parcel/transformer-posthtml": "2.3.12",
     "@parcel/transformer-pug": "2.3.12",
@@ -39,10 +39,10 @@
     "@parcel/transformer-sass": "2.3.12",
     "@parcel/transformer-stylus": "2.3.12",
     "@parcel/transformer-sugarss": "2.3.12",
-    "@atlassian/parcel-transformer-sync-dynamic-import": "2.3.12",
+    "@parcel/transformer-sync-dynamic-import": "2.3.12",
     "@parcel/transformer-toml": "2.3.12",
     "@parcel/transformer-typescript-types": "2.3.12",
-    "@atlassian/parcel-transformer-workerize": "2.3.12",
+    "@parcel/transformer-workerize": "2.3.12",
     "@parcel/transformer-yaml": "2.3.12"
   }
 }
