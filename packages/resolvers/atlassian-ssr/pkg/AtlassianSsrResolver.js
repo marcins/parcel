@@ -1,5 +1,5 @@
-const {Resolver} = require('@atlassian/parcel-plugin');
-const NodeResolver = require('@atlassian/parcel-node-resolver-core');
+const {Resolver} = require('@parcel/plugin');
+const NodeResolver = require('@parcel/node-resolver-core');
 
 const invariant = require('assert');
 const fs = require('fs');
@@ -43,7 +43,7 @@ const resolver = new Resolver({
     };
   },
   async resolve({dependency, specifier, config}) {
-    const {res, aliasMap} = config;
+    const {resolver, aliasMap} = config;
     if (WEBPACK_IMPORT_REGEX.test(dependency.specifier)) {
       throw new Error(
         `The import path: ${dependency.specifier} is using webpack specific loader import syntax, which isn't supported by Parcel.`,
@@ -54,12 +54,12 @@ const resolver = new Resolver({
       return {
         filePath: aliasMap.get(specifier),
         invalidateOnFileChange: [
-          path.resolve(res.options.projectRoot, 'package.json'),
+          path.resolve(resolver.options.projectRoot, 'package.json'),
         ],
       };
     }
     // $FlowFixMe[incompatible-call]
-    const resolveResult = await res.resolve({
+    const resolveResult = await resolver.resolve({
       filename: specifier,
       specifierType: dependency.specifierType,
       parent: dependency.resolveFrom,

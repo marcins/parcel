@@ -2,15 +2,16 @@
   "name": "@parcel/resolver-atlassian-ssr",
   "version": "2.3.12",
   "license": "MIT",
+  "author": "Atlassian Pty Ltd",
   "publishConfig": {
-    "access": "public"
+    "registry": "https://packages.atlassian.com/api/npm/npm-remote"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/parcel-bundler/parcel.git"
   },
   "main": "lib/AtlassianSsrResolver.js",
-  "source": "src/AtlassianSsrResolver.js",
+  "source": "pkg/AtlassianSsrResolver.js",
   "engines": {
     "parcel": "^2.3.1"
   },
