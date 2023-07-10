@@ -1,48 +1,45 @@
 {
-  "extends": ["@atlassian/parcel-config-default"],
+  "extends": ["@parcel/config-default"],
   "transformers": {
-    "types:*.{ts,tsx}": ["@atlassian/parcel-transformer-typescript-types"],
-    "bundle-text:*": ["@atlassian/parcel-transformer-inline-string", "..."],
-    "data-url:*": ["@atlassian/parcel-transformer-inline-string", "..."],
+    "types:*.{ts,tsx}": ["@parcel/transformer-typescript-types"],
+    "bundle-text:*": ["@parcel/transformer-inline-string", "..."],
+    "data-url:*": ["@parcel/transformer-inline-string", "..."],
     "*.worker.{js,mjs,jsm,jsx,es6,ts,tsx}": [
-      "@atlassian/parcel-transformer-workerize",
+      "@parcel/transformer-workerize",
       "..."
     ],
     "*.{js,mjs,jsm,jsx,es6,cjs,ts,tsx}": [
-      "@atlassian/parcel-transformer-sync-dynamic-import",
-      "@atlassian/parcel-transformer-babel",
-      "@atlassian/parcel-transformer-js"
+      "@parcel/transformer-sync-dynamic-import",
+      "@parcel/transformer-babel",
+      "@parcel/transformer-js"
     ],
-    "*.{json,json5}": ["@atlassian/parcel-transformer-json"],
-    "*.toml": ["@atlassian/parcel-transformer-toml"],
-    "*.yaml": ["@atlassian/parcel-transformer-yaml"],
-    "*.{gql,graphql}": ["@atlassian/parcel-transformer-graphql"],
-    "*.{styl,stylus}": ["@atlassian/parcel-transformer-stylus"],
-    "*.{sass,scss}": ["@atlassian/parcel-transformer-sass"],
-    "*.less": ["@atlassian/parcel-transformer-less"],
-    "*.css": [
-      "@atlassian/parcel-transformer-postcss",
-      "@atlassian/parcel-transformer-css"
-    ],
-    "*.sss": ["@atlassian/parcel-transformer-sugarss"],
+    "*.{json,json5}": ["@parcel/transformer-json"],
+    "*.toml": ["@parcel/transformer-toml"],
+    "*.yaml": ["@parcel/transformer-yaml"],
+    "*.{gql,graphql}": ["@parcel/transformer-graphql"],
+    "*.{styl,stylus}": ["@parcel/transformer-stylus"],
+    "*.{sass,scss}": ["@parcel/transformer-sass"],
+    "*.less": ["@parcel/transformer-less"],
+    "*.css": ["@parcel/transformer-postcss", "@parcel/transformer-css"],
+    "*.sss": ["@parcel/transformer-sugarss"],
     "*.{htm,html}": [
-      "@atlassian/parcel-transformer-posthtml",
-      "@atlassian/parcel-transformer-html"
+      "@parcel/transformer-posthtml",
+      "@parcel/transformer-html"
     ],
-    "*.pug": ["@atlassian/parcel-transformer-pug"],
-    "*.coffee": ["@atlassian/parcel-transformer-coffeescript"],
-    "*.mdx": ["@atlassian/parcel-transformer-mdx"],
+    "*.pug": ["@parcel/transformer-pug"],
+    "*.coffee": ["@parcel/transformer-coffeescript"],
+    "*.mdx": ["@parcel/transformer-mdx"],
     "*.{eot,gif,jpg,jpeg,ico,mp4,png,svg,ttf,woff}": [
-      "@atlassian/parcel-transformer-raw"
+      "@parcel/transformer-raw"
     ],
-    "url:*": ["@atlassian/parcel-transformer-raw"]
+    "url:*": ["@parcel/transformer-raw"]
   },
   "reporters": [
     "@atlassian/parcel-reporter-analytics",
-    "@atlassian/parcel-reporter-manifest",
-    "@atlassian/parcel-reporter-dev-server",
-    "@atlassian/parcel-reporter-bundle-analyzer",
+    "@parcel/reporter-manifest",
+    "@parcel/reporter-dev-server",
+    "@parcel/reporter-bundle-analyzer",
     "@atlassian/parcel-reporter-bundle-stats"
   ],
-  "resolvers": ["@atlassian/parcel-resolver-atlassian-ssr"]
+  "resolvers": ["@parcel/resolver-atlassian-ssr"]
 }
