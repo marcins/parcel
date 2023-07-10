@@ -29,7 +29,7 @@ describe('@parcel/config-atlassian', () => {
       }
 
       // Assert with deepStrictEqual rather than e.g. missingReferences.size as the
-      // assertion message with deepEqual enumerates the differences nicely
+      // assertion message with deepStrictEqual enumerates the differences nicely
       assert.deepStrictEqual(missingReferences, []);
     });
 
