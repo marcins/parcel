@@ -30,17 +30,14 @@ const reporter = new Reporter({
     await Promise.all(
       Array.from(entryBundlesByTarget).map(
         async ([, {target, entryBundles}]) => {
-          const /** @type {Map<string, string[]>} */ manifest = new Map();
+          const /** @type {Record<string, string[]>} */ manifest = {};
           for (const entryBundle of entryBundles) {
             const mainEntry = entryBundle.getMainEntry();
             if (mainEntry != null) {
-              manifest.set(
-                path.basename(mainEntry.filePath),
-                bundleGraph
-                  .getReferencedBundles(entryBundle)
-                  .concat([entryBundle])
-                  .map(b => path.basename(b.filePath)),
-              );
+              manifest[path.basename(mainEntry.filePath)] = bundleGraph
+                .getReferencedBundles(entryBundle)
+                .concat([entryBundle])
+                .map(b => path.basename(b.filePath));
             }
           }
 
