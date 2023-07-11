@@ -15,7 +15,7 @@
   },
   "main": "index.json",
   "scripts": {
-    "test-ci": "mocha"
+    "test": "mocha"
   },
   "dependencies": {
     "@atlassian/parcel-reporter-analytics": "2.3.12",
@@ -25,6 +25,11 @@
     "@parcel/transformer-image": "2.3.12",
     "@parcel/transformer-raw": "2.3.12",
     "@parcel/transformer-workerize": "2.3.12"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.1",
+    "@types/node": "^15.12.4",
+    "mocha": "^8.3.0"
   },
   "peerDependencies": {
     "@parcel/core": "^2.3.1"
