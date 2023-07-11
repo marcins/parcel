@@ -1,13 +1,10 @@
-// @flow
-
-import assert from 'assert';
-
-import config from '../';
-import packageJson from '../package.json';
+const assert = require('assert');
+const config = require('../index.json');
+const packageJson = require('../package.json');
 
 describe('@parcel/config-atlassian-ssr', () => {
-  let packageJsonDependencyNames: Set<string>;
-  let configPackageReferences: Set<string>;
+  let /** @type {Set<string>} */ packageJsonDependencyNames;
+  let /** @type {Set<string>} */ configPackageReferences;
 
   before(() => {
     packageJsonDependencyNames = new Set(
@@ -18,45 +15,46 @@ describe('@parcel/config-atlassian-ssr', () => {
 
   describe('package.json', () => {
     it('includes every package referenced in the config', () => {
-      let missingReferences = [];
-      for (let reference of configPackageReferences) {
+      const missingReferences = [];
+      for (const reference of configPackageReferences) {
         if (!packageJsonDependencyNames.has(reference)) {
           missingReferences.push(reference);
         }
       }
 
-      // Assert with deepEqual rather than e.g. missingReferences.size as the
-      // assertion message with deepEqual enumerates the differences nicely
-      assert.deepEqual(missingReferences, []);
+      // Assert with deepStrictEqual rather than e.g. missingReferences.size as the
+      // assertion message with deepStrictEqual enumerates the differences nicely
+      assert.deepStrictEqual(missingReferences, []);
     });
 
     it('does not include packages not referenced in the config', () => {
-      let unnecessaryDependencies = [];
-      for (let dependency of packageJsonDependencyNames) {
+      const unnecessaryDependencies = [];
+      for (const dependency of packageJsonDependencyNames) {
         if (!configPackageReferences.has(dependency)) {
           unnecessaryDependencies.push(dependency);
         }
       }
 
-      assert.deepEqual(unnecessaryDependencies, []);
+      assert.deepStrictEqual(unnecessaryDependencies, []);
     });
   });
 });
 
-function collectConfigPackageReferences(
-  configSection: mixed,
-  references: Set<string> = new Set(),
-): Set<string> {
+/**
+ * @param {any} configSection
+ * @param {Set<string>} references
+ * @returns {Set<string>}
+ */
+function collectConfigPackageReferences(configSection, references = new Set()) {
   if (configSection == null || typeof configSection !== 'object') {
     throw new TypeError('Expected config section to be an object or an array');
   }
 
-  for (let value of Object.values(configSection)) {
+  for (const value of Object.values(configSection)) {
     if (typeof value === 'string') {
       if (value === '...') {
         continue;
       }
-
       references.add(value);
     } else if (configSection != null && typeof configSection === 'object') {
       collectConfigPackageReferences(value, references);

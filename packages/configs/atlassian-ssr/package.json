@@ -11,7 +11,11 @@
   },
   "main": "index.json",
   "scripts": {
-    "test-ci": "mocha"
+    "test": "mocha"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.1",
+    "mocha": "^8.3.0"
   },
   "dependencies": {
     "@atlassian/parcel-reporter-analytics": "2.3.12",
@@ -31,7 +35,6 @@
     "@parcel/transformer-json": "2.3.12",
     "@parcel/transformer-less": "2.3.12",
     "@parcel/transformer-mdx": "2.3.12",
-    "@parcel/transformer-not-splittable": "2.3.12",
     "@parcel/transformer-postcss": "2.3.12",
     "@parcel/transformer-posthtml": "2.3.12",
     "@parcel/transformer-pug": "2.3.12",

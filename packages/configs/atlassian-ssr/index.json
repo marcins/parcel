@@ -32,8 +32,7 @@
     "*.{eot,gif,jpg,jpeg,ico,mp4,png,svg,ttf,woff}": [
       "@parcel/transformer-raw"
     ],
-    "url:*": ["@parcel/transformer-raw"],
-    "*": ["@parcel/transformer-not-splittable"]
+    "url:*": ["@parcel/transformer-raw"]
   },
   "reporters": [
     "@atlassian/parcel-reporter-analytics",
