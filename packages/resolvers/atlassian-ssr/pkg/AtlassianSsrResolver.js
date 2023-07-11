@@ -1,21 +1,25 @@
-// @flow
+const {Resolver} = require('@parcel/plugin');
+const NodeResolver = require('@parcel/node-resolver-core');
 
-import {Resolver} from '@parcel/plugin';
-import NodeResolver from '@parcel/node-resolver-core';
-
-import invariant from 'assert';
-import fs from 'fs';
-import path from 'path';
+const invariant = require('assert');
+const fs = require('fs');
+const path = require('path');
 
 // Throw user friendly errors on special webpack loader syntax
 // ex. `imports-loader?$=jquery!./example.js`
 const WEBPACK_IMPORT_REGEX = /\S+-loader\S*!\S+/g;
-function createAliasMap(projectRoot): Map<string, string> {
+
+/**
+ *
+ * @param {string} projectRoot
+ * @returns {Map<string, string>}
+ */
+function createAliasMap(projectRoot) {
   const aliasMap = new Map();
   const pkgJSON = JSON.parse(
     fs.readFileSync(path.join(projectRoot, 'package.json'), 'utf8'),
   );
-  Object.entries(pkgJSON['aliasSsr']).forEach(([k, v]) => {
+  Object.entries(pkgJSON.aliasSsr).forEach(([k, v]) => {
     invariant(typeof v === 'string');
     if (k.startsWith('.')) {
       aliasMap.set(path.join(projectRoot, k), path.join(projectRoot, v));
@@ -25,7 +29,7 @@ function createAliasMap(projectRoot): Map<string, string> {
   });
   return aliasMap;
 }
-export default (new Resolver({
+const resolver = new Resolver({
   loadConfig({options, logger}) {
     return {
       resolver: new NodeResolver({
@@ -34,13 +38,12 @@ export default (new Resolver({
         packageManager: options.packageManager,
         shouldAutoInstall: options.shouldAutoInstall,
         logger,
-        mode: options.mode,
       }),
       aliasMap: createAliasMap(options.projectRoot),
     };
   },
   async resolve({dependency, specifier, config}) {
-    let {resolver, aliasMap} = config;
+    const {resolver, aliasMap} = config;
     if (WEBPACK_IMPORT_REGEX.test(dependency.specifier)) {
       throw new Error(
         `The import path: ${dependency.specifier} is using webpack specific loader import syntax, which isn't supported by Parcel.`,
@@ -56,7 +59,7 @@ export default (new Resolver({
       };
     }
     // $FlowFixMe[incompatible-call]
-    let resolveResult = await resolver.resolve({
+    const resolveResult = await resolver.resolve({
       filename: specifier,
       specifierType: dependency.specifierType,
       parent: dependency.resolveFrom,
@@ -64,7 +67,7 @@ export default (new Resolver({
       sourcePath: dependency.sourcePath,
     });
 
-    let resolution = aliasMap.get(resolveResult?.filePath);
+    const resolution = aliasMap.get(resolveResult?.filePath);
 
     if (resolution != null) {
       resolveResult.filePath = resolution;
@@ -72,4 +75,6 @@ export default (new Resolver({
 
     return resolveResult;
   },
-}): Resolver);
+});
+
+module.exports.default = resolver;
