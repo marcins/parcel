@@ -1,21 +1,19 @@
-// @flow strict-local
+/** @typedef {import('@parcel/types').PackagedBundle} PackagedBundle */
+/** @typedef {import('@parcel/types').Target} Target */
 
-import type {PackagedBundle, Target} from '@parcel/types';
+const path = require('path');
+const {Reporter} = require('@parcel/plugin');
 
-import path from 'path';
-import {Reporter} from '@parcel/plugin';
-
-export default (new Reporter({
+const reporter = new Reporter({
   async report({event, options}) {
     if (event.type !== 'buildSuccess' || options.mode !== 'production') {
       return;
     }
 
-    let bundleGraph = event.bundleGraph;
-    let entryBundlesByTarget: Map<
-      string,
-      {|target: Target, entryBundles: Set<PackagedBundle>|},
-    > = new Map();
+    const {bundleGraph} = event;
+    /** @type {Map<string, {target: Target, entryBundles: Set<PackagedBundle>}>} */
+    const entryBundlesByTarget = new Map();
+
     bundleGraph.traverseBundles((bundle, _, actions) => {
       let res = entryBundlesByTarget.get(bundle.target.name);
       if (res == null) {
@@ -27,14 +25,14 @@ export default (new Reporter({
       }
       res.entryBundles.add(bundle);
       actions.skipChildren();
-    });
+    }, undefined);
 
     await Promise.all(
       Array.from(entryBundlesByTarget).map(
         async ([, {target, entryBundles}]) => {
-          let manifest = {};
-          for (let entryBundle of entryBundles) {
-            let mainEntry = entryBundle.getMainEntry();
+          const /** @type {Record<string, string[]>} */ manifest = {};
+          for (const entryBundle of entryBundles) {
+            const mainEntry = entryBundle.getMainEntry();
             if (mainEntry != null) {
               manifest[path.basename(mainEntry.filePath)] = bundleGraph
                 .getReferencedBundles(entryBundle)
@@ -46,9 +44,12 @@ export default (new Reporter({
           await options.outputFS.writeFile(
             path.join(target.distDir, 'parcel-manifest.json'),
             JSON.stringify(manifest, null, 2),
+            undefined,
           );
         },
       ),
     );
   },
-}): Reporter);
+});
+
+module.exports.default = reporter;

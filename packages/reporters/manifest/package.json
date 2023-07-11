@@ -1,14 +1,23 @@
 {
   "name": "@parcel/reporter-manifest",
   "version": "2.3.12",
+  "author": "Atlassian Pty Ltd",
+  "publishConfig": {
+    "registry": "https://packages.atlassian.com/api/npm/npm-remote"
+  },
   "main": "lib/ManifestReporter.js",
-  "source": "src/ManifestReporter.js",
+  "source": "pkg/ManifestReporter.js",
   "engines": {
     "node": ">= 10.0.0",
     "parcel": "^2.3.1"
   },
+  "devDependencies": {
+    "@types/node": "^15.12.4",
+    "typescript": ">=3.0.0"
+  },
   "dependencies": {
     "@parcel/plugin": "2.3.12",
-    "@parcel/utils": "2.3.12"
+    "@parcel/utils": "2.3.12",
+    "@parcel/types": "2.3.12"
   }
 }

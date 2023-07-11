@@ -2,14 +2,19 @@
   "name": "@parcel/reporter-react-loadable",
   "version": "2.3.12",
   "description": "parcel reporter plugin for generating a manifest for react loadable",
-  "main": "lib/ReactLoadableReporter.js",
-  "source": "src/ReactLoadableReporter.js",
+  "main": "pkg/ReactLoadableReporter.js",
   "engines": {
     "parcel": "^2.3.1"
   },
+  "scripts": {
+    "check-ts": "npx tsc -p ./tsconfig.json"
+  },
   "dependencies": {
     "@parcel/plugin": "2.3.12",
-    "@parcel/types": "2.3.12",
-    "nullthrows": "^1.1.1"
+    "@parcel/types": "2.3.12"
+  },
+  "devDependencies": {
+    "@types/node": "^15.12.4",
+    "typescript": ">=3.0.0"
   }
 }
